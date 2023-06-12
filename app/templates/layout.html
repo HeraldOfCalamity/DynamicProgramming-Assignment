@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P</title>
+</head>
+<body>
+    <h1>Navigation</h1>
+    <ul>
+        <li><a href= "{{ url_for('show_load_data') }}">Cargar los datos</a></li>
+        <li><a href= "{{ url_for('index') }}">Go to home</a></li>
+    </ul>
+    {% block body %}
+    {% endblock %}
+    <footer>
+
+    </footer>
+</body>
+</html>
