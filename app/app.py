@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify
+from config import config
 
 app = Flask(__name__)
 
@@ -14,10 +15,7 @@ initial_data = {
 # rangos = {}
 @app.route('/')
 def index():
-    data = {
-        'title': 'Pruebitas'
-    }
-    return render_template('layout.html', data=data)
+    return render_template('layout.html', config=config['layout'])
 
 @app.route('/data')
 def show_load_data():
@@ -53,11 +51,12 @@ def get_rangos():
         min_asig_val = initial_data['min_asig'][dest]
         right_sum += min_asig_val
         left_sum -= min_asig_val
-
         rangos[dest] = (right_sum, initial_data['available_res'] - left_sum)
+
     return rangos
 
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.config.from_object(config['development'])
+    app.run()
