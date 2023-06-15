@@ -1,7 +1,33 @@
 {% extends './layout.html' %}
 {% block body %}
 <div>
-    <h1>{{ data }}</h1>
-    
+    <h1>{{ data.get_funcion_objetivo() }}</h1>
+    <form name="table" method="POST" action="{{ url_for('show_interval_view') }}">
+        <table>
+            <thead>
+                <tr>
+                    <th>...</th>
+
+                    {% for dest in data.get_destinos() %}
+                    <th>{{ dest.get_nombre() }}</th>
+                    {% endfor %}
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for op in data.get_opciones() %}
+                <tr >
+                    <td>{{ op }}</td>
+
+                    {% for i in data.get_destinos() %}
+                    <td><input type="number" name="{{ op }}_{{ i }}_value"></td>
+                    {% endfor %}
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit" value="Aceptar">
+    </form>
 </div>
 {% endblock %}
