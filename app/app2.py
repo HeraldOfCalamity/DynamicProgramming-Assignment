@@ -24,19 +24,41 @@ def generate_op_list(num: int) -> list:
 
 @app.route('/data/setUp', methods=['POST'])
 def show_dataInput_view():
-    opNum = int(request.form.get('nud_options'))
-    destNum = int(request.form.get('nud_dest'))
+    
+    try:
+        opNum = int(request.form.get('nud_options'))
+        destNum = int(request.form.get('nud_dest'))
 
-    asig.set_destinos(generate_dest_list(destNum))
-    asig.set_opciones(generate_op_list(opNum))
+        asig.set_destinos(generate_dest_list(destNum))
+        asig.set_opciones(generate_op_list(opNum))
 
-    data = asig
+        data = asig
+        correct = True
 
-    return render_template('dataInput_view.html', data=data)
+    except Exception as ex:
+        correct = False
+        data = None
+    finally:
+        return render_template('dataInput_view.html', data=data, correct=correct)
+    
 
-@app.route('/data/intervals')
+@app.route('/data/intervals', methods=['POST'])
 def show_interval_view():
-    pass
+    try:
+        
+        for dest in asig.get_destinos():
+            benefit = {}
+            for op in asig.get_opciones():
+                benefit[op] = request.form.get(f'{op}_{dest.get_nombre()}_value')
+            dest.set_benefit(benefit)
+        
+        correct = True
+    except Exception as ex:
+        data = None
+        correct = False
+        print(ex.with_traceback())
+    finally:
+        return render_template('interval_view.html', correct=correct, data = data)
 
 @app.route('/sol')
 def show_solution_view():

@@ -22,7 +22,7 @@ class Asignacion:
     def set_caso(self, caso: str) -> None:
         self._caso = caso
 
-    def get_fucncion_objetivo(self) -> str:
+    def get_funcion_objetivo(self) -> str:
         n = len(self._destinos)
         d = ''
         rxd = '{'
@@ -33,7 +33,9 @@ class Asignacion:
         return f'f_{n}*(x_{n}) = {self._caso} ' + d + rxd
     
     def get_eficiencia(self) -> str:
-        pass
+        return 'x_(k-1) = x_k - d_k'
 
     def get_transicion(self) -> str:
-        pass
+        n = len(self._destinos)
+        return f'f_k*(x_k) = {self._caso} d_k' + '{ r_k(x_k, d_k) + f_k-1(x_k-1) }'
+    

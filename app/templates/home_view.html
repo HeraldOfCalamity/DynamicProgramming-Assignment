@@ -41,7 +41,7 @@
     const form = document.getElementById('form');
 
     const generateNameFields = () => {
-        if(nud_dest.value != null){
+        if(nud_dest.value != ''){
             while (nameField.firstChild) {
                 nameField.removeChild(nameField.firstChild);
             }
