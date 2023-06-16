@@ -1,0 +1,14 @@
+{% extends './layout.html' %}
+{% block body %}
+
+{% if correct %}
+<div>
+    {{ data.get_destinos() }}
+</div>
+{% else %}
+<div>
+    <h1>Error al generar intervalos</h1>
+</div>
+{% endif %}
+
+{% endblock %}
