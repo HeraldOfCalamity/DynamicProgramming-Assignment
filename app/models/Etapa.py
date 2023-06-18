@@ -5,22 +5,3 @@ class Etapa:
         self.matrix.set_Size_of_Matrix(nro, rango)
     def iterations(self, r, f):
         pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
