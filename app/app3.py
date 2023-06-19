@@ -27,7 +27,6 @@ def get_Initial_Data():
     initial_data["min_asig"] = {f'M{x}': 1 for x in range(1, size[0]+1)}
     initial_data["available_res"] = requested_data.get("available_res")
     initial_data["optimizer"] = requested_data.get("optimizer")
-    print(ProblemMatrix.matrix)
     return initial_data
 
 
@@ -38,19 +37,37 @@ def show_loaded_data():
     matrixLocaly = requested_data.get("matrix")
     ProblemMatrix.fill_Matrix(matrixLocaly)
     cost = ProblemMatrix.getBenefits(2)
-    print(ProblemMatrix.matrix)
     return {"matrix": ProblemMatrix.matrix.tolist(), "r": cost}
 
 @app.route("/solution", methods=["POST"])
 def make_Solution():
-    global cost
+    etapas = []
     requested_data = request.json
     f = requested_data.get('f')
-    etapa = Etapa()
-    etapa.set_Size_of_Matrix(requested_data.get("range"), len(requested_data.get("nro")))
-    etapa.iterations(cost, f)
-    print(etapa.matrix)
-    return {"r": cost}
+    ranges = requested_data.get("range")
+    # etapa = Etapa()
+    # etapa.set_Size_of_Matrix(requested_data.get("range"), len(requested_data.get("nro")))
+    # etapa.iterations(cost, f)
+
+    for index, (ra,i) in enumerate(zip(ranges, range(0, ProblemMatrix.columns))):
+        r = ProblemMatrix.getBenefits((ProblemMatrix.columns - 1) - i)
+        etapa = Etapa()
+        if index == len(ranges)-1:
+            etapa.set_Size_of_Matrix(1, len(requested_data.get("nro")))
+            f = etapa.iterations(r, f, True)
+            etapas.append(etapa)
+            print(f"matrix -> {etapa.matrix}")
+            print(f"F -> {f}")
+            print(f"R -> {r}")
+
+        else:
+            etapa.set_Size_of_Matrix(((ra[1] - ra[0])+1), len(requested_data.get("nro")))
+            f = etapa.iterations(r, f, False)
+            etapas.append(etapa)
+            print(f"F -> {f}")
+            print(f"R -> {r}")
+
+    return {"r": cost, "etapas": [x.matrix.tolist() for x in etapas]}
 
 if __name__ == '__main__':
     app.run(debug=True)
