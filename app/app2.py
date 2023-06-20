@@ -71,3 +71,4 @@ def show_solution_view():
 if __name__ == '__main__':
     app.config.from_object(config['development'])
     app.run()
+    

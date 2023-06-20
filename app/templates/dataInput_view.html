@@ -28,7 +28,7 @@
                          max="1000" 
                          placeholder="0"
                          value="0"
-                         class="benefit-input">
+                         onclick="this.select()">
                     </td>
                     {% endfor %}
 
@@ -49,19 +49,3 @@
 {% endif %}
 
 {% endblock %}
-{% block script %}
-<script>
-    const tabla = document.getElementById('tbl_r')
-
-    for (let row of tabla.children){
-        for (let col of row.children){
-            
-        }
-    }
-</script>
-{% endblock %}
-
-
-
-
-
