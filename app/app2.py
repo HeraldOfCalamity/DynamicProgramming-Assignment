@@ -13,7 +13,7 @@ def show_home_view():
 def generate_dest_list(num: int) -> list:
     dest_list = []
     for i in range(1, num+1):
-        dest_list.append(Destino(request.form.get(f'dest_{i}_name')))
+        dest_list.append(Destino(request.form.get(f'dest_{i}')))
     return dest_list
 
 def generate_op_list(num: int) -> list:
@@ -28,18 +28,21 @@ def show_dataInput_view():
     try:
         opNum = int(request.form.get('nud_options'))
         destNum = int(request.form.get('nud_dest'))
+        resNum = int(request.form.get('nud_resAmount'))
+        caso = str(request.form.get('slc_case'))
 
         asig.set_destinos(generate_dest_list(destNum))
         asig.set_opciones(generate_op_list(opNum))
+        asig.set_caso(caso)
+        asig.set_recurso(resNum)
 
-        data = asig
         correct = True
 
     except Exception as ex:
         correct = False
-        data = None
+        print(ex.args)
     finally:
-        return render_template('dataInput_view.html', data=data, correct=correct)
+        return render_template('dataInput_view.html', data=asig, correct=correct)
     
 
 @app.route('/data/intervals', methods=['POST'])
@@ -49,16 +52,17 @@ def show_interval_view():
         for dest in asig.get_destinos():
             benefit = {}
             for op in asig.get_opciones():
-                benefit[op] = request.form.get(f'{op}_{dest.get_nombre()}_value')
+                benefit[op] = int(request.form.get(f'{op}_{dest.get_nombre()}_value'))
             dest.set_benefit(benefit)
         
+        asig.get_rangos()
         correct = True
+
     except Exception as ex:
-        data = None
         correct = False
-        print(ex.with_traceback())
+        
     finally:
-        return render_template('interval_view.html', correct=correct, data = data)
+        return render_template('interval_view.html', correct=correct, data=asig)
 
 @app.route('/sol')
 def show_solution_view():

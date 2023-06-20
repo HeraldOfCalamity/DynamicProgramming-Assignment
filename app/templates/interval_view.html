@@ -3,7 +3,22 @@
 
 {% if correct %}
 <div>
-    {{ data.get_destinos() }}
+    <h2>Formulacion del problema</h2>
+    <hr>
+    <h3>Funcion objetivo</h3>
+    <ul><li>{{ data.get_funcion_objetivo() }}</li></ul>
+    <h3>Restricciones: </h3>
+    <ul>
+        <li><strong>Funcion eficiencia: </strong> {{ data.get_eficiencia() }}</li>
+        <li><strong>Funcion transicion: </strong> {{ data.get_transicion() }}</li>
+    </ul>
+</div>
+<div>
+    <h2>Etapas</h2>
+    <hr>
+    <div id="container-etapas">
+
+    </div>
 </div>
 {% else %}
 <div>

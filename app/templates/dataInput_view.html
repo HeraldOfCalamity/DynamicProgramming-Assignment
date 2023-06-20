@@ -3,9 +3,6 @@
 
 {% if correct %}
 <div>
-    <h1>{{ data.get_funcion_objetivo() }}</h1>
-    <h2>{{ data.get_transicion() }}</h2>
-    <h2>{{ data.get_eficiencia() }}</h2>
     <form action="{{ url_for('show_interval_view') }}" method="POST">
         <table>
             <thead>
@@ -18,20 +15,29 @@
 
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tbl_r">
                 {% for op in data.get_opciones() %}
-                <tr >
+                <tr id="r_row_{{ op }}">
                     <td>{{ op }}</td>
 
                     {% for i in data.get_destinos() %}
-                    <td><input type="number" name="{{ op }}_{{ i.get_nombre() }}_value"></td>
+                    <td>
+                        <input type="number"
+                         name="{{ op }}_{{ i.get_nombre() }}_value"
+                         min="1" 
+                         max="1000" 
+                         placeholder="0"
+                         value="0"
+                         class="benefit-input">
+                    </td>
                     {% endfor %}
 
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <input type="submit" value="Aceptar">
+        <input id="btn_submit" type="submit" value="Aceptar">
+        <input type="reset" value="Limpiar">
     </form>
 </div>
 
@@ -43,7 +49,17 @@
 {% endif %}
 
 {% endblock %}
+{% block script %}
+<script>
+    const tabla = document.getElementById('tbl_r')
 
+    for (let row of tabla.children){
+        for (let col of row.children){
+            
+        }
+    }
+</script>
+{% endblock %}
 
 
 
