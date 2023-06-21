@@ -5,23 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c557b63-44a6-4041-aade-1b84af0d77bf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/DynamicProgramming-Assignment.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/DynamicProgramming-Assignment.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app2.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/app2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/Aignacion.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/Aignacion.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/Destino.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/Destino.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/Etapa.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/Etapa.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/Matrix.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/Matrix.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/dataInput_view.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/dataInput_view.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/home_view.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/home_view.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/interval_view.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/interval_view.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/layout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/Solution.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/Solution.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -42,7 +41,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Merging json",
+    "git-widget-placeholder": "json",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
@@ -205,9 +204,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/models/Etapa.py</url>
-          <line>64</line>
-          <option name="timeStamp" value="4" />
+          <url>file://$PROJECT_DIR$/app/app2.py</url>
+          <line>61</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

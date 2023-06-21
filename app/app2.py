@@ -5,12 +5,13 @@ from models.Destino import Destino
 from models.Aignacion import Asignacion
 from config import config
 from models.Matrix import Matrix
+from models.Solution import Solution
 
 app = Flask(__name__)
 
 asig = Asignacion()
 problemMatrix = Matrix()
-
+sol = Solution()
 def jinja_zip(*args):
     return zip(*args)
 
@@ -68,11 +69,11 @@ def show_interval_view():
         rangos = list(reversed(list(x.get_rango() for x in asig.get_destinos())))
         rangos = np.array([list(range(start, end + 1)) for start, end in rangos])
         rangos[-1] = [rangos[-1][-1]]
-
+        sol.rangos = rangos
         # print([x.__str__() for x in asig.get_destinos()])
         iterations, fs, d = get_Iteration()
         reformed_d = reformat(d)
-
+        sol.d = reformed_d
         print(reformed_d)
         correct = True
         # print(asig.get_opciones())
@@ -85,7 +86,7 @@ def show_interval_view():
         return render_template('interval_view.html', correct=correct, data=asig, etapas=iterations, opciones=asig.get_opciones(), rangos=rangos.tolist(), fs=fs, d=reformed_d)
 
 
-def get_Iteration() -> (list, list, list):
+def get_Iteration() -> (list,list, list):
     etapas = []
     fs = []
     ds = []
@@ -102,7 +103,6 @@ def get_Iteration() -> (list, list, list):
             fs.append(f)
             etapa.get_destinations(asig.get_opciones(), f)
             ds.append(etapa.d)
-            print(f"d: {etapa.d}")
         else:
             etapa.set_Size_of_Matrix(((ra[1] - ra[0]) + 1), len(asig.get_opciones()))
             f = etapa.iterations(r, f, False, asig.get_caso())
@@ -111,7 +111,7 @@ def get_Iteration() -> (list, list, list):
 
             etapa.get_destinations(asig.get_opciones(), f)
             ds.append(etapa.d)
-            print(f"d: {etapa.d}")
+
     return (etapas, fs, ds)
 
 
@@ -131,7 +131,8 @@ def reformat(alist):
 
 @app.route('/sol')
 def show_solution_view():
-    pass
+    sol.createDictonaryPartialAnswer()
+    return sol.create_answer()
 
 if __name__ == '__main__':
     app.config.from_object(config['development'])

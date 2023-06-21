@@ -58,7 +58,6 @@ class Etapa:
             for i, j in zip(options, row):
                 partial_destinations[i] = j
             self.d.append(self.make_destinations_list(partial_destinations, f, index))
-        print(f"---------------------------")
 
 
     def make_destinations_list(self, my_dict, f, index):
