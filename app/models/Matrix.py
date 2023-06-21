@@ -12,10 +12,7 @@ class Matrix:
         return self.matrix
 
     def fill_Matrix(self, matrix):
-        if len(matrix) == len(self.matrix) and len(matrix[0]) == len(self.matrix[0]):
-            self.matrix = np.matrix(matrix)
-        else:
-            raise Exception("Out Of Bounds")
+        self.matrix = np.matrix(matrix)
 
     def getBenefits(self, objetive) -> list:
         return self.matrix[:, objetive].tolist()

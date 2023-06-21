@@ -6,6 +6,8 @@ class Etapa:
         self.rows = 0
         self.columns = 0
         self.matrix = np.matrix
+        self.f = []
+        self.d = []
 
     def set_Size_of_Matrix(self, rows, columns):
         """
@@ -42,10 +44,27 @@ class Etapa:
         else:
             return np.ma.masked_equal(self.matrix, 0).min(axis=1)
 
-    def iterations(self, r, f, li):
+    def iterations(self, r, f, li, case):
         if li:
             self.last_iteration(r, f)
         else:
             self.process(r, f)
-        print(self.matrix)
-        return self.maxOrMin("max")
+        self.f = self.maxOrMin(case)
+        return self.f
+
+    def get_destinations(self, options, f) -> dict:
+        partial_destinations= {}
+        for row, index in zip(self.matrix, range(len(f))):
+            for i, j in zip(options, row):
+                partial_destinations[i] = j
+            self.d.append(self.make_destinations_list(partial_destinations, f, index))
+        print(f"---------------------------")
+
+
+    def make_destinations_list(self, my_dict, f, index):
+        keys = []
+        for key, value in my_dict.items():
+            if value == f[index]:
+              keys.append(key)
+        return keys
+        # print(f"d: {d}\nf: {self.f}")

@@ -2,81 +2,138 @@
 {% block body %}
 <!-- Numero de destinos -->
 <div>
-    <form action="{{ url_for('show_dataInput_view') }}" method="POST" id="form">
+    <form action="{{ url_for('show_dataInput_view') }}" method="POST">
         <div>
             <label for="nud_dest">Cantidad de destinos:</label>
-            <input type="number" name="nud_dest" id="nud_dest" min="0" max="20">
+            <input type="number" name="nud_dest" id="nud_dest" min="1" max="20" placeholder="0" value="0">
         </div>
+        <div id="destContainer">
+
+        </div>
+        <br><hr>
         <div>
             <label for="nud_options">Numero de opciones</label>
-            <input type="number" name="nud_options" id="nud_options" min="0" max="20">
+            <input type="number" name="nud_options" id="nud_options" min="1" max="20" placeholder="0" value="0">
         </div>
+        <div id="opContainer">
+
+        </div>
+        <br><hr>
         <div>
             <label for="slc_case">Caso:</label>
             <select name="slc_case" id="slc_case">
                 <option value="max">MAX</option>
                 <option value="min">min</option>
             </select>
+            <label for="nud_resAmount">Cantidad de recurso:</label>
+            <input type="number" name="nud_resAmount" id="nud_resAmount" min="1" max="20" placeholder="0" value="0">
         </div>
-        <input type="submit" value="Siguiente">
+        <div id="form">
+
+        </div>
+        <input id="btn_submit" type="submit" value="Siguiente">
+        <input type="reset" value="Limpiar">
     </form>
-    <div>
-        <input type="button" id="btn_getNames" value="Asignar Nombres">
-        <input type="button" id="btn_getOptions" value="Ingresar opciones">
-    </div>
 </div>
 
 {% endblock %}
 {% block script %}
 <script>
-    const btn_getNames = document.getElementById('btn_getNames');
-    const btn_getOptions = document.getElementById('btn_getOptions');
-
+    // Variables
     const nud_dest = document.getElementById('nud_dest');
     const nud_options = document.getElementById('nud_options');
+    const nud_resAmount = document.getElementById('nud_resAmount');
 
-    const nameField = document.createElement('div')
-    const optionField = document.createElement('div');
+    const destField = document.getElementById('destContainer');
+    const opField = document.getElementById('opContainer');
+    
+    const btn_sumbit = document.getElementById('btn_submit');
 
-    const form = document.getElementById('form');
-
-    const generateNameFields = () => {
-        if(nud_dest.value != ''){
-            while (nameField.firstChild) {
-                nameField.removeChild(nameField.firstChild);
+    // Functions
+    const fillContainer = (target, num, type, name, value) => {
+        
+        if(isNaN(num) || num <= 0){
+            while(target.firstChild){
+                target.removeChild(target.firstChild);
             }
-            for(let i = 1; i<=parseInt(nud_dest.value); i++){
-                const txt_input = document.createElement('input')
-                txt_input.setAttribute('name', 'dest_' + i + '_name');
-                txt_input.setAttribute('value', 'dest' + i);
-                nameField.appendChild(txt_input);
+            return;
+        }
+
+        let childrenNum = target.children.length;
+
+        if (childrenNum > num){
+            for(let i=0; i < childrenNum - num; i++){
+                target.removeChild(target.lastChild);
             }
-            form.appendChild(nameField);
-        }else{
-            alert('Ingrese un numero de destinos valido');
+        } 
+
+        if (childrenNum < num){
+            for(let i=1; i <= num - childrenNum; i++){
+                const input = document.createElement('input');
+                
+                input.setAttribute('type', type);
+                input.setAttribute('name', name.toString() + (childrenNum + i));
+                if(value != undefined){
+                    input.setAttribute('value', value.toString() + (childrenNum + i));
+                }
+                input.addEventListener('click', () => { input.select(); });
+
+                target.appendChild(input);
+            }
         }
     }
-    const generateOptionFields = () => {
-        if(nud_options.value != ''){
-            while (optionField.firstChild){
-                optionField.removeChild(optionField.firstChild);
-            }
-            for(let i = 1; i<=parseInt(nud_options.value); i++){
-                const txt_input = document.createElement('input');
-                txt_input.setAttribute('type', 'number');
-                txt_input.setAttribute('name', 'option_' + i);
-                console.log(txt_input)
-                optionField.appendChild(txt_input);
-            }
-            form.appendChild(optionField);
-        }else{
-            alert('Ingrese numero de opciones valido');
+    const isDestFieldValid = () => {
+        for(let dest of destField.children){
+            if(dest.value.trim() == '') return false;
         }
+        return true;
+    }
+    const isOpFieldValid = () => {
+        for (let op of opField.children){
+            if (op.value.trim() == '') return false;
+        }
+        return true;
+    }
+    const isFormValid = () => {
+
+        return !isNaN(parseInt(nud_dest.value.trim())) &&
+            !isNaN(parseInt(nud_options.value.trim())) &&
+            !isNaN(parseInt(nud_resAmount.value.trim())) &&
+            isDestFieldValid() && isOpFieldValid();
+    }
+    const areOpValid = () => {
+        for (let op of opField.children){
+            if (parseInt(op.value) > parseInt(nud_resAmount.value))
+                return false;
+        }
+        return true;
     }
 
-    btn_getNames.addEventListener('click', generateNameFields);
-    btn_getOptions.addEventListener('click', generateOptionFields);
+    // Eventlisteners
+    nud_dest.addEventListener('click',() => { nud_dest.select(); });
+    nud_dest.addEventListener('input',() => {
+        fillContainer(destField, parseInt(nud_dest.value),'text','dest_','dest');
+    });
 
+    nud_options.addEventListener('click', () => { nud_options.select(); });
+    nud_options.addEventListener('input', () =>{
+        fillContainer(opField, parseInt(nud_options.value), 'number', 'option_');
+    });
 
+    nud_resAmount.addEventListener('click', () => { nud_resAmount.select(); });
+
+    btn_sumbit.addEventListener('click', (e) => {
+        if (!isFormValid()){
+            e.preventDefault();
+            alert('Existen datos no validos ingresados');
+            return;
+        }
+        
+        if (!areOpValid()){
+            e.preventDefault();
+            alert('Opciones de asignacion incoherentes');
+            return;
+        }
+    });
 </script>
 {% endblock %}

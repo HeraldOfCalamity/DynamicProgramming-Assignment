@@ -1,14 +1,53 @@
-{% extends './layout.html' %}
-{% block body %}
-
-{% if correct %}
+{% extends './layout.html' %} {% block body %} {% if correct %}
 <div>
-    {{ data.get_destinos() }}
+  <h2>Formulacion del problema</h2>
+  <hr />
+  <h3>Funcion objetivo</h3>
+  <ul>
+    <li>{{ data.get_funcion_objetivo() }}</li>
+  </ul>
+  <h3>Restricciones:</h3>
+  <ul>
+    <li><strong>Funcion eficiencia: </strong> {{ data.get_eficiencia() }}</li>
+    <li><strong>Funcion transicion: </strong> {{ data.get_transicion() }}</li>
+  </ul>
+</div>
+<div>
+  <h2>Etapas</h2>
+  <hr />
+  <div id="container-etapas">
+    {% for etapa, rango, f, d in etapas|zip(rangos, fs, d)|list %}
+    <div>
+      <table>
+        <thead>
+          <th>x{{loop.index}}</th>
+          {% for i in opciones %}
+          <th>{{ i }}</th>
+          {% endfor %}
+          <th>f{{loop.index}}*</th>
+          <th>d{{loop.index}}</th>
+
+        </thead>
+        <tbody>
+          {% for row, i, f, dest in etapa.matrix|zip(rango, f, d)| list %}
+          <tr>
+              <th>{{i}}</th>
+              {% for element in row %}
+              <td>{{ element|int }}</td>
+              {% endfor %}
+            <th>{{f|int}}</th>
+            <th>{{dest}}</th>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% endfor %}
+  </div>
 </div>
 {% else %}
 <div>
-    <h1>Error al generar intervalos</h1>
+  <h1>Error al generar intervalos</h1>
 </div>
-{% endif %}
-
-{% endblock %}
+{% endif %} {% endblock %}
