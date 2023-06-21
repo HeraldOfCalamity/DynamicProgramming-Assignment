@@ -132,7 +132,7 @@ def reformat(alist):
 @app.route('/sol')
 def show_solution_view():
     sol.createDictonaryPartialAnswer()
-    return sol.create_answer()
+    sol.create_answer(asig.get_destinos())
 
 if __name__ == '__main__':
     app.config.from_object(config['development'])

@@ -7,7 +7,6 @@
     <list default="true" id="4c557b63-44a6-4041-aade-1b84af0d77bf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app2.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/app2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/Etapa.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/Etapa.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/Solution.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/Solution.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -202,13 +201,13 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/app2.py</url>
-          <line>61</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
     </breakpoint-manager>
   </component>
 </project>
