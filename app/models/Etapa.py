@@ -6,6 +6,7 @@ class Etapa:
         self.rows = 0
         self.columns = 0
         self.matrix = np.matrix
+
     def set_Size_of_Matrix(self, rows, columns):
         """
         :param rows: is an array/tuple
@@ -48,6 +49,3 @@ class Etapa:
             self.process(r, f)
         print(self.matrix)
         return self.maxOrMin("max")
-
-
-
