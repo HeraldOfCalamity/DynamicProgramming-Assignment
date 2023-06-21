@@ -4,10 +4,10 @@ from config import config
 app = Flask(__name__)
 
 initial_data = {
-    'destinations':['M1', 'M2', 'M3', 'M4'],
-    'asig_options': [1, 2, 3, 4],
-    'min_asig': {'M1': 1, 'M2': 1, 'M3': 1, 'M4': 1},
-    'available_res': 7,
+    'destinations':['M1', 'M2', 'M3'],
+    'asig_options': [1, 2, 3],
+    'min_asig': {'M1': 1, 'M2': 1, 'M3': 1},
+    'available_res': 6,
     'optimizer': 'max'
 }
 
