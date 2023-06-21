@@ -83,10 +83,10 @@ def show_interval_view():
         print(ex)
         
     finally:
-        return render_template('interval_view.html', correct=correct, data=asig, etapas=iterations, opciones=asig.get_opciones(), rangos=rangos.tolist(), fs=fs, d=reformed_d)
+        return render_template('interval_view.html', correct=correct, data=asig, etapas=iterations, rangos=rangos.tolist(), fs=fs, d=reformed_d)
 
 
-def get_Iteration() -> (list,list, list):
+def get_Iteration():
     etapas = []
     fs = []
     ds = []
@@ -136,4 +136,4 @@ def show_solution_view():
 
 if __name__ == '__main__':
     app.config.from_object(config['development'])
-    app.run(debug=True)
+    app.run()
