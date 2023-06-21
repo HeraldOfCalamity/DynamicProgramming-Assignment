@@ -5,12 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config.tittle }}</title>
     {% block style %}{% endblock %}
+    
+    <link rel="stylesheet" href="../resources/css/styles.css">
 </head>
 <body>
-    <h1>Menu</h1>
-    <ul>
-        <li><a href= "{{ url_for('show_home_view') }}">Nuevo problema</a></li>
-    </ul>
+    <header>
+        <h1>Menu</h1>
+        <ul>
+            <li><a href= "{{ url_for('show_home_view') }}">Nuevo problema</a></li>
+        </ul>
+    </header>
+    
     {% block body %}
     {% endblock %}
     <footer>
