@@ -4,6 +4,7 @@ class Asignacion:
         self._opciones = opciones
         self._caso = caso
         self._recurso = recurso
+        self._solucion = None
 
     def __str__(self) -> str:
         return str(self._destinos) + '\n' + str(self._opciones)
@@ -76,4 +77,9 @@ class Asignacion:
             i += 1
         return mtx
 
+    def get_solution(self):
+        return self._solucion
+
+    def set_solution(self, sol):
+        self._solucion = sol
 
