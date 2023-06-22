@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config.tittle }}</title>
+    <title>Asignacion Tabla Definida</title>
     {% block style %}{% endblock %}
 
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
@@ -32,10 +32,6 @@
                             <!-- <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div> -->
                             Nuevo Problema
                         </a>
-                        <a class="nav-link" href="index.html">
-                            <!-- <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div> -->
-                            Tabla inicial
-                        </a>
                         <div class="sb-sidenav-menu-heading">Solucion</div>
                         {% if data.get_etapas() %}
                         {% set r = [] %} {% for x in data.get_etapas() %} {% set _ = r.append(x) %} {% endfor %}
@@ -60,7 +56,7 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                         Etapas
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
+                        </a>
                         {% endif %}
                         <a class="nav-link" href="/sol">
                             <!-- <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div> -->
@@ -76,22 +72,24 @@
         </div>
         <div id="layoutSidenav_content">
             <main>
-                {% block body %}
-                {% endblock %}
+                <div class="container-fluid px-4">
+                    <h1 class="mt-3">Problema</h1>
+                    {% block body %}
+                    {% endblock %}
+                </div>
             </main>
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
                         <div class="text-muted">Asignacion con tabla definida 2023</div>
                         <div>
-                            <a href="#">Balderrama</a>
+                            <a href="https://www.instagram.com/iojhabd4r/" target="_blank">Balderrama</a>
                             &middot;
-                            <a href="#">Eguino</a>
+                            <a href="https://www.instagram.com/leoeguino/?hl=es" target="_blank">Eguino</a>
                             &middot;
-                            <a href="#">Espinoza</a>
+                            <a href="https://www.instagram.com/amedeoxd/" target="_blank">Espinoza</a>
                             &middot;
-                            <a href="#">Uriona</a>
-                            &middot;
+                            <a href="https://www.instagram.com/sergio.uriona/" target="_blank">Uriona</a>
                         </div>
                     </div>
                 </div>

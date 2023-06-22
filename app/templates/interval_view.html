@@ -1,55 +1,71 @@
 {% extends './layout.html' %} {% block body %} {% if correct %}
-<div>
-  <h2>Formulacion del problema</h2>
-  <hr />
-  <h3>Funcion objetivo</h3>
-  <ul>
-    <li>{{ data.get_funcion_objetivo() }}</li>
-  </ul>
-  <h3>Restricciones:</h3>
-  <ul>
-    <li><strong>Funcion eficiencia: </strong> {{ data.get_eficiencia() }}</li>
-    <li><strong>Funcion transicion: </strong> {{ data.get_transicion() }}</li>
-  </ul>
+<div class="row">
+  <div class="col">
+    <h2>Formulacion del problema</h2>
+    <hr />
+    <h3>Funcion objetivo</h3>
+    <ul>
+      <li>{{ data.get_funcion_objetivo() }}</li>
+    </ul>
+    <h3>Restricciones:</h3>
+    <ul>
+      <li><strong>Funcion eficiencia: </strong> {{ data.get_eficiencia() }}</li>
+      <li><strong>Funcion transicion: </strong> {{ data.get_transicion() }}</li>
+    </ul>
+  </div>
 </div>
-<div>
+
+<div class="row">
   <h2>Etapas</h2>
   <hr />
   <div id="container-etapas">
     <div>
       {% for etapa, rango, f, d in etapas|zip(rangos, fs, d)|list %}
-
-      <div class="card">
+      <div class="card mb-4">
+        <div class="card-header">
+          Etapa {{ loop.index }}
+        </div>
         <div class="card-body">
-          <table id="example" class="table table-striped" style="width: 100%">
-            <thead>
-              <th>x{{loop.index}}</th>
-              {% for i in opciones %}
-              <th>{{ i }}</th>
-              {% endfor %}
-              <th>f{{loop.index}}*</th>
-              <th>d{{loop.index}}</th>
-            </thead>
-            <tbody>
-              {% for row, i, f, dest in etapa.matrix|zip(rango, f, d)| list %}
-              <tr>
-                <th>{{i}}</th>
-                {% for element in row %}
-                <td>{{ element|int }}</td>
+          <div class="datatable-container">
+            <table id="example" class="datatable-table" style="width: 100%">
+              <thead>
+                <th>x{{loop.index}}</th>
+                {% for i in opciones %}
+                <th>{{ i }}</th>
                 {% endfor %}
-                <th>{{f|int}}</th>
-                <th>{{dest}}</th>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+                <th>f{{loop.index}}*</th>
+                <th>d{{loop.index}}</th>
+              </thead>
+              <tbody>
+                {% for row, i, f, dest in etapa.matrix|zip(rango, f, d)| list %}
+                <tr>
+                  <th>{{i}}</th>
+                  {% for element in row %}
+                  <td>{{ element|int }}</td>
+                  {% endfor %}
+                  <th>{{f|int}}</th>
+                  <th>{{dest}}</th>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-
       {% endfor %}
     </div>
-    <input id="btn_submit" type="submit" value="Siguiente" />
-    <input type="reset" value="Limpiar" />
+    <div class="row">
+      <div class="col">
+        <ol class="breadcrumb mb-3">
+          <li class="breadcrumb-item active">
+            <input  class="form-control" id="btn_submit" type="submit" value="Siguiente" />
+          </li>
+          <li>
+            <input class="form-control" type="reset" value="Limpiar" />
+          </li>
+        </ol>
+      </div>
+    </div>
   </div>
 </div>
 {% else %}

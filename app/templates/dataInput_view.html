@@ -2,46 +2,67 @@
 {% block body %}
 
 {% if correct %}
-<div>
-    <form action="{{ url_for('show_interval_view') }}" method="POST">
-        <table id="test" class="table table-striped" style="width:100%">
-            <thead>
-                <tr>
-                    <th>...</th>
 
-                    {% for dest in data.get_destinos() %}
-                    <th>{{ dest.get_nombre() }}</th>
-                    {% endfor %}
+<form action="{{ url_for('show_interval_view') }}" method="POST">
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Ingreso de beneficios
+                </div>
+                <div class="card-body">
+                    <div class="datatable-container">
+                        <table class="datatable-table" id="test" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>...</th>
+                    
+                                    {% for dest in data.get_destinos() %}
+                                    <th>{{ dest.get_nombre() }}</th>
+                                    {% endfor %}
+                    
+                                </tr>
+                            </thead>
+                            <tbody id="tbl_r">
+                                {% for op in data.get_opciones() %}
+                                <tr id="r_row_{{ op }}">
+                                    <td>{{ op }}</td>
+                    
+                                    {% for i in data.get_destinos() %}
+                                    <td>
+                                        <input class="form-control" type="number"
+                                            name="{{ op }}_{{ i.get_nombre() }}_value"
+                                            min="0"
+                                            max="1000" 
+                                            placeholder="0"
+                                            value="0"
+                                            onclick="this.select()">
+                                    </td>
+                                    {% endfor %}
+                    
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                </tr>
-            </thead>
-            <tbody id="tbl_r">
-                {% for op in data.get_opciones() %}
-                <tr id="r_row_{{ op }}">
-                    <td>{{ op }}</td>
+    <br><hr>
 
-                    {% for i in data.get_destinos() %}
-                    <td>
-                        <input type="number"
-                         name="{{ op }}_{{ i.get_nombre() }}_value"
-                         min="0"
-                         max="1000" 
-                         placeholder="0"
-                         value="0"
-                         onclick="this.select()">
-                    </td>
-                    {% endfor %}
+    <div class="row">
+        <div class="col">
+            <ol class="breadcrumb mb-3">
+                <li class="breadcrumb-item active">
+                    <input class="form-control" id="btn_submit" type="submit" value="Aceptar">
+                </li>
+            </ol>
+        </div>  
+    </div>    
 
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <input id="btn_submit" type="submit" value="Aceptar">
-        <input type="reset" value="Limpiar">
-    </form>
-</div>
-
-
+</form>
 
 {% else %}
 
