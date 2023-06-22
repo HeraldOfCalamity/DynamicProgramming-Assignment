@@ -13,7 +13,7 @@
   </ul>
 </div>
 <div>
-    <h2>Etapas</h2>
+  <h2>Etapas</h2>
   <hr />
   <div id="container-etapas">
     <div>
@@ -21,33 +21,35 @@
 
       <div class="card">
         <div class="card-body">
-            <table id="example" class="table table-striped" style="width: 100%">
-                <thead>
-                  <th>x{{loop.index}}</th>
-                  {% for i in opciones %}
-                  <th>{{ i }}</th>
-                  {% endfor %}
-                  <th>f{{loop.index}}*</th>
-                  <th>d{{loop.index}}</th>
-                </thead>
-                <tbody>
-                  {% for row, i, f, dest in etapa.matrix|zip(rango, f, d)| list %}
-                  <tr>
-                    <th>{{i}}</th>
-                    {% for element in row %}
-                    <td>{{ element|int }}</td>
-                    {% endfor %}
-                    <th>{{f|int}}</th>
-                    <th>{{dest}}</th>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+          <table id="example" class="table table-striped" style="width: 100%">
+            <thead>
+              <th>x{{loop.index}}</th>
+              {% for i in opciones %}
+              <th>{{ i }}</th>
+              {% endfor %}
+              <th>f{{loop.index}}*</th>
+              <th>d{{loop.index}}</th>
+            </thead>
+            <tbody>
+              {% for row, i, f, dest in etapa.matrix|zip(rango, f, d)| list %}
+              <tr>
+                <th>{{i}}</th>
+                {% for element in row %}
+                <td>{{ element|int }}</td>
+                {% endfor %}
+                <th>{{f|int}}</th>
+                <th>{{dest}}</th>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
 
       {% endfor %}
     </div>
+    <input id="btn_submit" type="submit" value="Siguiente" />
+    <input type="reset" value="Limpiar" />
   </div>
 </div>
 {% else %}
@@ -55,3 +57,13 @@
   <h1>Error al generar intervalos</h1>
 </div>
 {% endif %} {% endblock %}
+{% block script%}
+  <script>
+    $(document).ready(() => {
+    $("#btn_submit").on("click", () => {
+      console.log("testing")
+      window.location.href = '/sol'
+    })
+  })
+  </script>
+{% endblock %}

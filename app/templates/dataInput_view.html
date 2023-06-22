@@ -42,11 +42,7 @@
 </div>
 
 
-<script>
-    $(document).ready(() => {
-        $('#test').DataTable();
-    })
-</script>
+
 {% else %}
 
 <div>
@@ -54,4 +50,11 @@
 </div>
 {% endif %}
 
+{% endblock %}
+{% block script %}
+<script>
+    $(document).ready(() => {
+        $('#test').DataTable();
+    })
+</script>
 {% endblock %}

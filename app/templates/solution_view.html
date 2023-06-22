@@ -2,10 +2,10 @@
 {% block body %}
 
 {% if correct %}
-<div>
+<div class="card">
     {% for sol in data.get_solution() %}
-    <div>
-        <table>
+    <div class="card-body">
+        <table id="test" class="table table-striped" style="width:100%">
             <thead>
                 <th>Destinos</th>
                 <th>llega</th>
@@ -35,3 +35,11 @@
 {% endif %}
 
 {% endblock %}
+
+{ % block script %}
+<script>
+    $(document).ready(() => {
+        $('#test').DataTable();
+    });
+</script>
+{ % endblock % }

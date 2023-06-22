@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, make_response, redirect
 import numpy as np
 from models.Etapa import Etapa
 from models.Destino import Destino
@@ -6,6 +6,7 @@ from models.Aignacion import Asignacion
 from config import config
 from models.Matrix import Matrix
 from models.Solution import Solution
+import json
 
 app = Flask(__name__)
 
@@ -38,12 +39,13 @@ def generate_op_list(num: int) -> list:
 
 @app.route('/data/setUp', methods=['POST'])
 def show_dataInput_view():
-
     try:
         opNum = int(request.form.get('nud_options'))
         destNum = int(request.form.get('nud_dest'))
         resNum = int(request.form.get('nud_resAmount'))
         caso = str(request.form.get('slc_case'))
+
+       
 
         asig.set_destinos(generate_dest_list(destNum))
         asig.set_opciones(generate_op_list(opNum))
