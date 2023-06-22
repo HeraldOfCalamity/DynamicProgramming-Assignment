@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response
 import numpy as np
 from models.Etapa import Etapa
 from models.Destino import Destino
@@ -18,6 +18,10 @@ def jinja_zip(*args):
 app.jinja_env.filters['zip'] = jinja_zip
 @app.route('/')
 def show_home_view():
+    global asig, problemMatrix, sol
+    asig = Asignacion()
+    problemMatrix = Matrix()
+    sol = Solution()
     return render_template('home_view.html')
 
 def generate_dest_list(num: int) -> list:
@@ -34,7 +38,7 @@ def generate_op_list(num: int) -> list:
 
 @app.route('/data/setUp', methods=['POST'])
 def show_dataInput_view():
-    
+
     try:
         opNum = int(request.form.get('nud_options'))
         destNum = int(request.form.get('nud_dest'))
@@ -45,12 +49,11 @@ def show_dataInput_view():
         asig.set_opciones(generate_op_list(opNum))
         asig.set_caso(caso)
         asig.set_recurso(resNum)
-
         correct = True
 
     except Exception as ex:
         correct = False
-        print(ex.args)
+        print(ex)
     finally:
         return render_template('dataInput_view.html', data=asig, correct=correct)
     
@@ -70,13 +73,13 @@ def show_interval_view():
         rangos = np.array([list(range(start, end + 1)) for start, end in rangos])
         rangos[-1] = [rangos[-1][-1]]
         sol.rangos = rangos
-        # print([x.__str__() for x in asig.get_destinos()])
+
         iterations, fs, d = get_Iteration()
         reformed_d = reformat(d)
         sol.d = reformed_d
-        print(reformed_d)
+
         correct = True
-        # print(asig.get_opciones())
+        print([x.get_nombre() for x in asig.get_destinos()])
 
     except Exception as ex:
         correct = False
@@ -131,9 +134,18 @@ def reformat(alist):
 
 @app.route('/sol')
 def show_solution_view():
-    sol.createDictonaryPartialAnswer()
-    sol.create_answer(asig.get_destinos())
+    try:
+        sol.createDictonaryPartialAnswer()
+        asig.set_solution(sol.createSolutionMatrix())
+
+        correct = True
+        print(asig.get_solution())
+    except Exception as ex:
+        correct = False
+        print(ex)
+    finally:
+        return render_template('solution_view.html',correct=correct, data=asig)
 
 if __name__ == '__main__':
     app.config.from_object(config['development'])
-    app.run()
+    app.run(debug=True)
