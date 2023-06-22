@@ -13,37 +13,41 @@
   </ul>
 </div>
 <div>
-  <h2>Etapas</h2>
+    <h2>Etapas</h2>
   <hr />
   <div id="container-etapas">
-    {% for etapa, rango, f, d in etapas|zip(rangos, fs, d)|list %}
     <div>
-      <table>
-        <thead>
-          <th>x{{loop.index}}</th>
-          {% for i in opciones %}
-          <th>{{ i }}</th>
-          {% endfor %}
-          <th>f{{loop.index}}*</th>
-          <th>d{{loop.index}}</th>
+      {% for etapa, rango, f, d in etapas|zip(rangos, fs, d)|list %}
 
-        </thead>
-        <tbody>
-          {% for row, i, f, dest in etapa.matrix|zip(rango, f, d)| list %}
-          <tr>
-              <th>{{i}}</th>
-              {% for element in row %}
-              <td>{{ element|int }}</td>
-              {% endfor %}
-            <th>{{f|int}}</th>
-            <th>{{dest}}</th>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <div class="card">
+        <div class="card-body">
+            <table id="example" class="table table-striped" style="width: 100%">
+                <thead>
+                  <th>x{{loop.index}}</th>
+                  {% for i in opciones %}
+                  <th>{{ i }}</th>
+                  {% endfor %}
+                  <th>f{{loop.index}}*</th>
+                  <th>d{{loop.index}}</th>
+                </thead>
+                <tbody>
+                  {% for row, i, f, dest in etapa.matrix|zip(rango, f, d)| list %}
+                  <tr>
+                    <th>{{i}}</th>
+                    {% for element in row %}
+                    <td>{{ element|int }}</td>
+                    {% endfor %}
+                    <th>{{f|int}}</th>
+                    <th>{{dest}}</th>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+        </div>
+      </div>
+
+      {% endfor %}
     </div>
-
-    {% endfor %}
   </div>
 </div>
 {% else %}

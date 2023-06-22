@@ -4,7 +4,7 @@
 {% if correct %}
 <div>
     <form action="{{ url_for('show_interval_view') }}" method="POST">
-        <table>
+        <table id="test" class="table table-striped" style="width:100%">
             <thead>
                 <tr>
                     <th>...</th>
@@ -41,6 +41,12 @@
     </form>
 </div>
 
+
+<script>
+    $(document).ready(() => {
+        $('#test').DataTable();
+    })
+</script>
 {% else %}
 
 <div>

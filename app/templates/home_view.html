@@ -3,9 +3,11 @@
 <!-- Numero de destinos -->
 <div>
     <form action="{{ url_for('show_dataInput_view') }}" method="POST">
-        <div>
-            <label for="nud_dest">Cantidad de destinos:</label>
+        <div class="col">
+            <div>
+                <label for="nud_dest">Cantidad de destinos:</label>
             <input type="number" name="nud_dest" id="nud_dest" min="1" max="20" placeholder="0" value="0">
+            </div>
         </div>
         <div id="destContainer">
 
@@ -23,7 +25,7 @@
             <label for="slc_case">Caso:</label>
             <select name="slc_case" id="slc_case">
                 <option value="max">MAX</option>
-                <option value="min">min</option>
+                <option value="min">MIN</option>
             </select>
             <label for="nud_resAmount">Cantidad de recurso:</label>
             <input type="number" name="nud_resAmount" id="nud_resAmount" min="1" max="20" placeholder="0" value="0">
@@ -70,14 +72,13 @@
         if (childrenNum < num){
             for(let i=1; i <= num - childrenNum; i++){
                 const input = document.createElement('input');
-                
+
                 input.setAttribute('type', type);
                 input.setAttribute('name', name.toString() + (childrenNum + i));
                 if(value != undefined){
                     input.setAttribute('value', value.toString() + (childrenNum + i));
                 }
                 input.addEventListener('click', () => { input.select(); });
-
                 target.appendChild(input);
             }
         }
