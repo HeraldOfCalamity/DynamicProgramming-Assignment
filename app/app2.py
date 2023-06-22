@@ -104,7 +104,7 @@ def show_interval_view():
         for dest in asig.get_destinos():
             benefit = {}
             for op in asig.get_opciones():
-                benefit[op] = int(request.form.get(f'{op}_{dest.get_nombre()}_value'))
+                benefit[op] = float(request.form.get(f'{op}_{dest.get_nombre()}_value'))
             dest.set_benefit(benefit)
 
         asig.get_rangos()

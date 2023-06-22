@@ -2,30 +2,37 @@
 {% block body %}
 
 {% if correct %}
-<div class="card">
-    {% for sol in data.get_solution() %}
-    <div class="card-body">
-        <table id="test" class="table table-striped" style="width:100%">
-            <thead>
-                <th>Destinos</th>
-                <th>llega</th>
-                <th>asigna</th>
-                <th>sobra</th>
-            </thead>
-            <tbody>
-                {% for row, dest in sol|zip(data.get_destinos()) %}
-                    <tr>
-                        <th>{{dest.get_nombre()}}</th>
-                        {% for element in row %}
-                        <td>{{element}}</td>
-                        {% endfor %}
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+
+{% for sol in data.get_solution() %}
+<div class="card mb-4">
+    <div class="card-header">
+        Solucion {{ loop.index }}
     </div>
-    {% endfor %}
+    <div class="card-body">
+        <div class="datatable-container">
+            <table id="test" class="datatable-table" style="width:100%">
+                <thead>
+                    <th>Destinos</th>
+                    <th>llega</th>
+                    <th>asigna</th>
+                    <th>sobra</th>
+                </thead>
+                <tbody>
+                    {% for row, dest in sol|zip(data.get_destinos()) %}
+                        <tr>
+                            <th>{{dest.get_nombre()}}</th>
+                            {% for element in row %}
+                            <td>{{element}}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+{% endfor %}
+
 
 {% else %}
 
