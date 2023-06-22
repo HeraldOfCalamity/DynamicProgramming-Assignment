@@ -1,0 +1,43 @@
+{% extends './layout.html' %} {% block body %}
+<div class="card">
+  {% set r = [] %} {% for x in data.get_etapas() %} {% set _ = r.append(x) %} {%
+  endfor %}
+    {% set rang = [] %} {% for x in data.get_rangos() %} {% set _ = rang.append(x) %} {% endfor %}
+    {% set fs = [] %} {% for x in data.get_fs() %} {% set _ = fs.append(x) %} {% endfor %}
+    {% set ds = [] %} {% for x in data.get_ds() %} {% set _ = ds.append(x) %} {% endfor %}
+    <h2>Etapa: {{id+1}}</h2>
+    <div class="card-body">
+        <table id="table" class="table table-striped" style="width: 100%">
+            <thead>
+            <th>x{{id+1}}</th>
+            {% for opt in data.get_opciones() %}
+    <th>{{opt}}</th>
+    {% endfor %}
+            <th>f{{id+1}}*</th>
+            <th>d{{id+1}}</th>
+            </thead>
+            <tbody>
+                {% for item, ran, f, d  in r[id].matrix|zip(rang[id], fs[id], ds[id])|list %}
+                <tr>
+                    <th>{{ran}}</th>
+                     {% for col in item %}
+                        <td>{{ col|int }}</td>
+                    {% endfor %}
+                    <th>{{f | int}}</th>
+                    <th>{{d}}</th>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready( function() {
+        $('#table').DataTable();
+    })
+</script>
+{% endblock %}

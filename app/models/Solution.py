@@ -20,7 +20,7 @@ class Solution:
         return self.partialAnswer
     def create_answer(self):
         cpyPartialAnswer = copy.deepcopy(self.partialAnswer)
-        etapa, dict = cpyPartialAnswer.popitem()
+        _, dict = cpyPartialAnswer.popitem()
         clave, valor = dict.popitem()
         if isinstance(valor, int):
             valor = [valor]
@@ -44,6 +44,7 @@ class Solution:
                 if val == valor:
                     return clave
         return None
+    
     def createSolutionMatrix(self):
         self.answer = []
         partsol = self.create_answer()

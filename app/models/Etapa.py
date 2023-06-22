@@ -21,8 +21,6 @@ class Etapa:
         self.matrix = np.zeros([rows, columns])
         return self.matrix
 
-    # return self.matrix[:, objetive].tolist()
-
     def process(self, r, f):
         for fila in range(self.rows):
             for col, i in zip(range(self.columns), range(len(f))):

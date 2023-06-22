@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, make_response, redirect
 import numpy as np
 from models.Etapa import Etapa
 from models.Destino import Destino
-from models.Aignacion import Asignacion
+from models.Asignacion import Asignacion
 from config import config
 from models.Matrix import Matrix
 from models.Solution import Solution
@@ -23,7 +23,7 @@ def show_home_view():
     asig = Asignacion()
     problemMatrix = Matrix()
     sol = Solution()
-    return render_template('home_view.html')
+    return render_template('home_view.html', data=asig)
 
 def generate_dest_list(num: int) -> list:
     dest_list = []
@@ -37,15 +37,13 @@ def generate_op_list(num: int) -> list:
         op_list.append(int(request.form.get(f'option_{i}')))
     return op_list
 
-@app.route('/data/setUp', methods=['POST'])
+@app.route('/data/setUp', methods=['POST', 'GET'])
 def show_dataInput_view():
     try:
         opNum = int(request.form.get('nud_options'))
         destNum = int(request.form.get('nud_dest'))
         resNum = int(request.form.get('nud_resAmount'))
         caso = str(request.form.get('slc_case'))
-
-       
 
         asig.set_destinos(generate_dest_list(destNum))
         asig.set_opciones(generate_op_list(opNum))
@@ -59,6 +57,37 @@ def show_dataInput_view():
     finally:
         return render_template('dataInput_view.html', data=asig, correct=correct)
     
+@app.route('/setCookie', methods=["POST"])
+def setCookie():
+    if request.method == 'POST':
+        opNum = int(request.form.get('nud_options'))
+        destNum = int(request.form.get('nud_dest'))
+        resNum = int(request.form.get('nud_resAmount'))
+        caso = str(request.form.get('slc_case'))
+
+
+
+        asig.set_destinos(generate_dest_list(destNum))
+        asig.set_opciones(generate_op_list(opNum))
+        asig.set_caso(caso)
+        asig.set_recurso(resNum)
+
+        toCookie = {
+            'opNum': asig.get_opciones(),
+            'destNum': asig.get_destinos(),
+            'resNum': asig.get_recurso(),
+            'caso': asig.get_caso()
+        }
+
+        resp = make_response(render_template('dataInput_view.html', data=asig, correct=True))
+        resp.set_cookie('asig', json.dumps(toCookie))
+        return resp
+
+
+@app.route('/data/etapas/<int:id>')
+def getEtapas(id):
+    print(asig.get_rangos())
+    return render_template('etapas.html', data=asig, correct=True, id=id)
 
 @app.route('/data/intervals', methods=['POST'])
 def show_interval_view():
@@ -74,6 +103,7 @@ def show_interval_view():
         rangos = list(reversed(list(x.get_rango() for x in asig.get_destinos())))
         rangos = np.array([list(range(start, end + 1)) for start, end in rangos])
         rangos[-1] = [rangos[-1][-1]]
+        asig.set_rangos(rangos)
         sol.rangos = rangos
 
         iterations, fs, d = get_Iteration()
@@ -116,7 +146,9 @@ def get_Iteration():
 
             etapa.get_destinations(asig.get_opciones(), f)
             ds.append(etapa.d)
-
+    asig.set_etapas(etapas)
+    asig.set_fs(fs)
+    asig.set_ds(ds)
     return (etapas, fs, ds)
 
 

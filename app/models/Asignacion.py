@@ -5,6 +5,10 @@ class Asignacion:
         self._caso = caso
         self._recurso = recurso
         self._solucion = None
+        self._etapas = None
+        self._rangos = None
+        self._fs = None
+        self._ds = None
 
     def __str__(self) -> str:
         return str(self._destinos) + '\n' + str(self._opciones)
@@ -56,6 +60,8 @@ class Asignacion:
             left += dest.get_min_asig()
         return left
 
+    def set_rangos(self, rangos):
+        self._rangos = rangos
 
     def get_rangos(self):
         right = 0
@@ -66,6 +72,7 @@ class Asignacion:
             right += minAsig    
             left -= minAsig
             dest.set_rango((right, self._recurso - left))
+        return self._rangos
 
     def get_matriz(self):
         mtx = []
@@ -83,3 +90,21 @@ class Asignacion:
     def set_solution(self, sol):
         self._solucion = sol
 
+
+    def set_etapas(self,etapas):
+        self._etapas = etapas
+
+    def get_etapas(self):
+        return self._etapas
+
+    def get_fs(self):
+        return self._fs
+
+    def set_fs(self, fs):
+        self._fs = fs
+
+    def get_ds(self):
+        return self._ds
+
+    def set_ds(self, ds):
+        self._ds = ds
