@@ -39,6 +39,7 @@ def generate_op_list(num: int) -> list:
 
 @app.route('/data/setUp', methods=['POST', 'GET'])
 def show_dataInput_view():
+    error = ''
     try:
         opNum = int(request.form.get('nud_options'))
         destNum = int(request.form.get('nud_dest'))
@@ -53,9 +54,9 @@ def show_dataInput_view():
 
     except Exception as ex:
         correct = False
-        print(ex)
+        error = ex
     finally:
-        return render_template('dataInput_view.html', data=asig, correct=correct)
+        return render_template('dataInput_view.html', data=asig, correct=correct, error=error)
     
 @app.route('/setCookie', methods=["POST"])
 def setCookie():
@@ -86,11 +87,18 @@ def setCookie():
 
 @app.route('/data/etapas/<int:id>')
 def getEtapas(id):
-    print(asig.get_rangos())
-    return render_template('etapas.html', data=asig, correct=True, id=id)
+    error = None
+    try:
+        asig.get_etapas()[id]
+        correct=True
+    except Exception as ex:
+        correct = False
+        error = ex
+    return render_template('etapas.html', data=asig, correct=correct, id=id, error=error)
 
 @app.route('/data/intervals', methods=['POST'])
 def show_interval_view():
+    error = ''
     try:
         
         for dest in asig.get_destinos():
@@ -106,25 +114,20 @@ def show_interval_view():
         asig.set_rangos(rangos)
         sol.rangos = rangos
 
-        iterations, fs, d = get_Iteration()
-        reformed_d = reformat(d)
-        sol.d = reformed_d
+        _, _, sol.d = get_Iteration()
 
         correct = True
-        print([x.get_nombre() for x in asig.get_destinos()])
 
     except Exception as ex:
         correct = False
-        print(ex)
+        error = ex
         
     finally:
-        return render_template('interval_view.html', correct=correct, data=asig, etapas=iterations, rangos=rangos.tolist(), fs=fs, d=reformed_d)
+        return render_template('interval_view.html', correct=correct, data=asig, error=error)
 
 
 def get_Iteration():
-    etapas = []
-    fs = []
-    ds = []
+    asig.set_etapas([])
     problemMatrix.fill_Matrix(asig.get_matriz())
     rangos = list(reversed(list(x.get_rango() for x in asig.get_destinos())))
     f = [0] * len(asig.get_opciones())
@@ -134,40 +137,28 @@ def get_Iteration():
         if index == len(rangos)- 1:
             etapa.set_Size_of_Matrix(1, len(asig.get_opciones()))
             f = etapa.iterations(r, f, True, asig.get_caso())
-            etapas.append(etapa)
-            fs.append(f)
+            asig.get_etapas().append(etapa)
+            asig.get_fs().append(f)
             etapa.get_destinations(asig.get_opciones(), f)
-            ds.append(etapa.d)
+            asig.get_ds().append(etapa.d)
         else:
             etapa.set_Size_of_Matrix(((ra[1] - ra[0]) + 1), len(asig.get_opciones()))
             f = etapa.iterations(r, f, False, asig.get_caso())
-            etapas.append(etapa)
-            fs.append(f)
+            asig.get_etapas().append(etapa)
+            asig.get_fs().append(f)
 
             etapa.get_destinations(asig.get_opciones(), f)
-            ds.append(etapa.d)
-    asig.set_etapas(etapas)
-    asig.set_fs(fs)
-    asig.set_ds(ds)
-    return (etapas, fs, ds)
+            asig.get_ds().append(etapa.d)
 
-
-def reformat(alist):
-    nlist = []
-
-    for row in alist:
-        tlist = []
-        for i in row:
-            if len(i) > 1:
-                tlist.append(i)
-            else:
-                tlist.append(i[0])
-        nlist.append(tlist)
-    return nlist
-
+    return (
+        asig.get_etapas(),
+        asig.get_fs(),
+        asig.get_formated_ds()
+    )
 
 @app.route('/sol')
 def show_solution_view():
+    error = ''
     try:
         sol.createDictonaryPartialAnswer()
         asig.set_solution(sol.createSolutionMatrix())
@@ -176,9 +167,9 @@ def show_solution_view():
         print(asig.get_solution())
     except Exception as ex:
         correct = False
-        print(ex)
+        error = ex
     finally:
-        return render_template('solution_view.html',correct=correct, data=asig)
+        return render_template('solution_view.html',correct=correct, data=asig, error=error)
 
 if __name__ == '__main__':
     app.config.from_object(config['development'])

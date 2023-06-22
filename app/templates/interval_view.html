@@ -17,16 +17,20 @@
   <hr />
   <div id="container-etapas">
     <div>
-      {% for etapa, rango, f, d in etapas|zip(rangos, fs, d)|list %}
+      {% set r = [] %} {% for x in data.get_etapas() %} {% set _ = r.append(x) %} {% endfor %}
+      {% set rang = [] %} {% for x in data.get_rangos() %} {% set _ = rang.append(x) %} {% endfor %}
+       {% set fs = [] %} {% for x in data.get_fs() %} {% set _ = fs.append(x) %} {% endfor %}
+    {% set ds = [] %} {% for x in data.get_formated_ds() %} {% set _ = ds.append(x) %} {% endfor %}
+      {% for etapa, rango, f, d in r|zip(rang, fs, ds)|list %}
 
       <div class="card">
         <div class="card-body">
           <table id="example" class="table table-striped" style="width: 100%">
             <thead>
               <th>x{{loop.index}}</th>
-              {% for i in opciones %}
-              <th>{{ i }}</th>
-              {% endfor %}
+              {% for opt in data.get_opciones() %}
+    <th>{{opt}}</th>
+    {% endfor %}
               <th>f{{loop.index}}*</th>
               <th>d{{loop.index}}</th>
             </thead>
@@ -35,9 +39,9 @@
               <tr>
                 <th>{{i}}</th>
                 {% for element in row %}
-                <td>{{ element|int }}</td>
+                <td>{{ element }}</td>
                 {% endfor %}
-                <th>{{f|int}}</th>
+                <th>{{f}}</th>
                 <th>{{dest}}</th>
               </tr>
               {% endfor %}
@@ -55,6 +59,9 @@
 {% else %}
 <div>
   <h1>Error al generar intervalos</h1>
+  <div class="alert alert-danger" role="alert">
+    Error: No Se Puedieron Generar los Intervalos
+</div>
 </div>
 {% endif %} {% endblock %}
 {% block script%}

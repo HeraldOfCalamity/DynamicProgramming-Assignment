@@ -5,10 +5,10 @@ class Asignacion:
         self._caso = caso
         self._recurso = recurso
         self._solucion = None
-        self._etapas = None
+        self._etapas = []
         self._rangos = None
-        self._fs = None
-        self._ds = None
+        self._fs = []
+        self._ds = []
 
     def __str__(self) -> str:
         return str(self._destinos) + '\n' + str(self._opciones)
@@ -106,5 +106,19 @@ class Asignacion:
     def get_ds(self):
         return self._ds
 
+    def get_formated_ds(self):
+        return self.reformat(self._ds)
     def set_ds(self, ds):
-        self._ds = ds
+        self._ds = self.reformat(ds)
+
+    def reformat(self, alist):
+        nlist = []
+        for row in alist:
+            tlist = []
+            for i in row:
+                if len(i) > 1:
+                    tlist.append(i)
+                else:
+                    tlist.append(i[0])
+            nlist.append(tlist)
+        return nlist

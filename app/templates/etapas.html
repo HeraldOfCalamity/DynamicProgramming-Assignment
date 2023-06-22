@@ -1,29 +1,30 @@
-{% extends './layout.html' %} {% block body %}
+{% extends './layout.html' %} {% block body %} {% if correct %}
 <div class="card">
-  {% set r = [] %} {% for x in data.get_etapas() %} {% set _ = r.append(x) %} {%
-  endfor %}
+
+    {% set r = [] %} {% for x in data.get_etapas() %} {% set _ = r.append(x) %} {%
+    endfor %}
     {% set rang = [] %} {% for x in data.get_rangos() %} {% set _ = rang.append(x) %} {% endfor %}
     {% set fs = [] %} {% for x in data.get_fs() %} {% set _ = fs.append(x) %} {% endfor %}
-    {% set ds = [] %} {% for x in data.get_ds() %} {% set _ = ds.append(x) %} {% endfor %}
+    {% set ds = [] %} {% for x in data.get_formated_ds() %} {% set _ = ds.append(x) %} {% endfor %}
     <h2>Etapa: {{id+1}}</h2>
     <div class="card-body">
         <table id="table" class="table table-striped" style="width: 100%">
             <thead>
-            <th>x{{id+1}}</th>
-            {% for opt in data.get_opciones() %}
-    <th>{{opt}}</th>
-    {% endfor %}
-            <th>f{{id+1}}*</th>
-            <th>d{{id+1}}</th>
+                <th>x{{id+1}}</th>
+                {% for opt in data.get_opciones() %}
+                <th>{{opt}}</th>
+                {% endfor %}
+                <th>f{{id+1}}*</th>
+                <th>d{{id+1}}</th>
             </thead>
             <tbody>
-                {% for item, ran, f, d  in r[id].matrix|zip(rang[id], fs[id], ds[id])|list %}
+                {% for item, ran, f, d in r[id].matrix|zip(rang[id], fs[id], ds[id])|list %}
                 <tr>
                     <th>{{ran}}</th>
-                     {% for col in item %}
-                        <td>{{ col|int }}</td>
+                    {% for col in item %}
+                    <td>{{ col }}</td>
                     {% endfor %}
-                    <th>{{f | int}}</th>
+                    <th>{{f }}</th>
                     <th>{{d}}</th>
                 </tr>
 
@@ -31,12 +32,39 @@
             </tbody>
         </table>
     </div>
+    {% if id == 0 %}
+        <div style="display: flex; justify-content: space-between;">
+            <span class="btn btn-primary disabled" role="button">Anterior</span>
+            <a class="btn btn-primary" href="{{ url_for('getEtapas', id=id+1)}}" role="button">Siguiente</a>
+        </div>
+    {% elif id == (r|length)-1 %}
+        <div style="display: flex; justify-content: space-between;">
+            <a class="btn btn-primary" href="{{ url_for('getEtapas', id=id-1)}}" role="button">Anterior</a>
+            <a class="btn btn-primary" href="{{ url_for('show_solution_view')}}" role="button">Solucion!!</a>
+        </div>
+    {% else %}
+        
+        <div style="display: flex; justify-content: space-between;">
+            <a class="btn btn-primary" href="{{ url_for('getEtapas', id=id-1)}}" role="button">Anterior</a>
+            <a class="btn btn-primary" href="{{ url_for('getEtapas', id=id+1)}}" role="button">Siguiente</a>
+        </div>
+    {% endif %}
+
 </div>
+
+{% else %}
+<div>
+    <h1>Error al Obtener La etapa </h1>
+    <div class="alert alert-danger" role="alert">
+        Error: No Existen mas Etapas
+    </div>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block script %}
 <script>
-    $(document).ready( function() {
+    $(document).ready(function () {
         $('#table').DataTable();
     })
 </script>

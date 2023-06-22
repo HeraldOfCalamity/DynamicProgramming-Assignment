@@ -2,6 +2,7 @@
 {% block body %}
 
 {% if correct %}
+
 <div>
     <form action="{{ url_for('show_interval_view') }}" method="POST">
         <table id="test" class="table table-striped" style="width:100%">
@@ -47,6 +48,9 @@
 
 <div>
     <h1>Error, ingrese datos validos de inicio</h1>
+    <div class="alert alert-danger" role="alert">
+        Error: Ingresar Datos Validos!!
+    </div>
 </div>
 {% endif %}
 
