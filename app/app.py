@@ -37,19 +37,55 @@ def generate_op_list(num: int) -> list:
         op_list.append(int(request.form.get(f'option_{i}')))
     return op_list
 
+def generateRanges(i):
+    rangos = None
+    if i:
+        rangos = list(reversed(list(x.get_rango() for x in asig.get_destinos())))
+        rangos = np.array([list(range(start, end + 1)) for start, end in rangos])
+        rangos[-1] = [rangos[-1][-1]]
+    else:
+        rangos = list(reversed(list(x.get_rango() for x in asig.get_destinos())))
+    return rangos
+def destParser(datos):
+    dset = []
+    for d in datos:
+        nombre = d['name']
+        beneficio = d['benefits']
+        range = d['range']
+        if d['benefits'] is not None:
+            try:
+                beneficios = {int(k): v for k, v in d['benefits'].items()}
+                beneficio = beneficios
+            except ValueError:
+                beneficios = None
+        dset.append(Destino(nombre, benefit=beneficio, rango=range))
+    return dset
+def load_cookie():
+    asig_data = json.loads(request.cookies.get('asig'))
+    opNum = asig_data['opNum']
+    destNum = asig_data['destNum']
+    resNum = int(asig_data['resNum'])
+    caso = str(asig_data['caso'])
+
+    asig.set_destinos(destParser(destNum))
+    asig.set_opciones(opNum)
+    asig.set_caso(caso)
+    asig.set_recurso(resNum)
+
 @app.route('/data/setUp', methods=['POST', 'GET'])
 def show_dataInput_view():
     error = ''
     try:
-        opNum = int(request.form.get('nud_options'))
-        destNum = int(request.form.get('nud_dest'))
-        resNum = int(request.form.get('nud_resAmount'))
-        caso = str(request.form.get('slc_case'))
-
-        asig.set_destinos(generate_dest_list(destNum))
-        asig.set_opciones(generate_op_list(opNum))
-        asig.set_caso(caso)
-        asig.set_recurso(resNum)
+        load_cookie()
+        # opNum = int(request.form.get('nud_options'))
+        # destNum = int(request.form.get('nud_dest'))
+        # resNum = int(request.form.get('nud_resAmount'))
+        # caso = str(request.form.get('slc_case'))
+        #
+        # asig.set_destinos(generate_dest_list(destNum))
+        # asig.set_opciones(generate_op_list(opNum))
+        # asig.set_caso(caso)
+        # asig.set_recurso(resNum)
         correct = True
 
     except Exception as ex:
@@ -66,21 +102,15 @@ def setCookie():
         resNum = int(request.form.get('nud_resAmount'))
         caso = str(request.form.get('slc_case'))
 
-
-
-        asig.set_destinos(generate_dest_list(destNum))
-        asig.set_opciones(generate_op_list(opNum))
-        asig.set_caso(caso)
-        asig.set_recurso(resNum)
-
+        dst = generate_dest_list(destNum)
         toCookie = {
-            'opNum': asig.get_opciones(),
-            'destNum': asig.get_destinos(),
-            'resNum': asig.get_recurso(),
-            'caso': asig.get_caso()
+            'opNum': generate_op_list(opNum),
+            'destNum': [x.__dict__() for x in dst],
+            'resNum': resNum,
+            'caso': caso
         }
 
-        resp = make_response(render_template('dataInput_view.html', data=asig, correct=True))
+        resp = make_response(redirect('/data/setUp'))
         resp.set_cookie('asig', json.dumps(toCookie))
         return resp
 
@@ -96,21 +126,42 @@ def getEtapas(id):
         error = ex
     return render_template('etapas.html', data=asig, correct=correct, id=id, error=error)
 
-@app.route('/data/intervals', methods=['POST'])
+@app.route('/setCookie/matrix', methods=['POST'])
+def createMatrixCookie():
+
+    for dest in asig.get_destinos():
+        benefit = {}
+        for op in asig.get_opciones():
+            benefit[op] = float(request.form.get(f'{op}_{dest.get_nombre()}_value'))
+        dest.set_benefit(benefit)
+
+    asig.get_rangos()
+    toCookie = {
+        "dests": [x.__dict__() for x in asig.get_destinos()]
+    }
+    resp = make_response(redirect('/data/intervals'))
+    resp.set_cookie('matrix', json.dumps(toCookie))
+    return resp
+
+def loadMatrixCookie():
+    matrix_data = json.loads(request.cookies.get('matrix'))
+    asig.set_destinos(destParser(matrix_data['dests']))
+
+@app.route('/data/intervals', methods=['POST', 'GET'])
 def show_interval_view():
     error = ''
     try:
-        
-        for dest in asig.get_destinos():
-            benefit = {}
-            for op in asig.get_opciones():
-                benefit[op] = float(request.form.get(f'{op}_{dest.get_nombre()}_value'))
-            dest.set_benefit(benefit)
-
-        asig.get_rangos()
-        rangos = list(reversed(list(x.get_rango() for x in asig.get_destinos())))
-        rangos = np.array([list(range(start, end + 1)) for start, end in rangos])
-        rangos[-1] = [rangos[-1][-1]]
+        load_cookie()
+        loadMatrixCookie()
+        # for dest in asig.get_destinos():
+        #     benefit = {}
+        #     for op in asig.get_opciones():
+        #         benefit[op] = float(request.form.get(f'{op}_{dest.get_nombre()}_value'))
+        #     dest.set_benefit(benefit)
+        #
+        # asig.get_rangos()
+        print([x.get_benefit()[1] for x in asig.get_destinos()])
+        rangos = generateRanges(True)
         asig.set_rangos(rangos)
         sol.rangos = rangos
 
@@ -121,6 +172,7 @@ def show_interval_view():
     except Exception as ex:
         correct = False
         error = ex
+        print(ex)
         
     finally:
         return render_template('interval_view.html', correct=correct, data=asig, error=error)
@@ -129,7 +181,7 @@ def show_interval_view():
 def get_Iteration():
     asig.set_etapas([])
     problemMatrix.fill_Matrix(asig.get_matriz())
-    rangos = list(reversed(list(x.get_rango() for x in asig.get_destinos())))
+    rangos = generateRanges(False)
     f = [0] * len(asig.get_opciones())
     for index, (ra, i) in enumerate(zip(rangos, range(0, problemMatrix.matrix.shape[1]))):
         r = problemMatrix.getBenefits((problemMatrix.columns-1)-i)
