@@ -2,37 +2,44 @@
 {% block body %}
 
 {% if correct %}
-
-{% for sol in data.get_solution() %}
+<h1 class="mt-3">Soluciones</h1>
 <div class="card mb-4">
-    <div class="card-header">
-        Solucion {{ loop.index }}
-    </div>
     <div class="card-body">
-        <div class="datatable-container">
-            <table id="test" class="datatable-table" style="width:100%">
-                <thead>
-                    <th>Destinos</th>
-                    <th>llega</th>
-                    <th>asigna</th>
-                    <th>sobra</th>
-                </thead>
-                <tbody>
-                    {% for row, dest in sol|zip(data.get_destinos()) %}
-                        <tr>
-                            <th>{{dest.get_nombre()}}</th>
-                            {% for element in row %}
-                            <td>{{element}}</td>
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-{% endfor %}
-
+        {% for sol in data.get_solution() %}
+        <div class="row">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Solucion {{ loop.index }}
+                </div>
+                <div class="card-body">
+                    <div class="datatable-wrapper datatable-loading no-footer fixed-columns">
+                        <div class="datatable-container">
+                            <table id="test" class="datatable-table">
+                                <thead>
+                                    <th>Destinos</th>
+                                    <th>llega</th>
+                                    <th>asigna</th>
+                                    <th>sobra</th>
+                                </thead>
+                                <tbody>
+                                    {% for row, dest in sol|zip(data.get_destinos()) %}
+                                        <tr>
+                                            <th>{{dest.get_nombre()}}</th>
+                                            {% for element in row %}
+                                            <td>{{element}}</td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div> 
+        {% endfor %}  
+    </div>  
+</div> 
 
 {% else %}
 

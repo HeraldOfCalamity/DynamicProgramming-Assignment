@@ -2,68 +2,55 @@
 {% block body %}
 
 {% if correct %}
-
-<form action="{{ url_for('show_interval_view') }}" method="POST">
-    <div class="row">
-        <div class="col-xl-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    Ingreso de beneficios
-                </div>
-                <div class="card-body">
-                    <div class="datatable-container">
-                        <table class="datatable-table" id="test" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>...</th>
-                    
-                                    {% for dest in data.get_destinos() %}
-                                    <th>{{ dest.get_nombre() }}</th>
-                                    {% endfor %}
-                    
-                                </tr>
-                            </thead>
-                            <tbody id="tbl_r">
-                                {% for op in data.get_opciones() %}
-                                <tr id="r_row_{{ op }}">
-                                    <td>{{ op }}</td>
-                    
-                                    {% for i in data.get_destinos() %}
-                                    <td>
-                                        <input class="form-control" type="number"
-                                            name="{{ op }}_{{ i.get_nombre() }}_value"
-                                            min="0"
-                                            max="1000" 
-                                            placeholder="0"
-                                            value="0"
-                                            onclick="this.select()"
-                                            step=".01">
-                                    </td>
-                                    {% endfor %}
-                    
-                                </tr>
+<div class="card mb-4">
+    <div class="card-header">
+        <h1 class="mt-3">Ingreso de Beneficios</h1>
+    </div>
+    <div class="card-body">
+        <form action="{{ url_for('show_interval_view') }}" method="POST">
+            <div class="datatable-wrapper datatable-loading no-footer fixed-columns">
+                <div class="datatable-container">
+                    <table class="datatable-table " id="test">
+                        <thead>
+                            <tr>
+                                <th>...</th>
+                
+                                {% for dest in data.get_destinos() %}
+                                <th>{{ dest.get_nombre() }}</th>
                                 {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                
+                            </tr>
+                        </thead>
+                        <tbody id="tbl_r">
+                            {% for op in data.get_opciones() %}
+                            <tr id="r_row_{{ op }}">
+                                <td>{{ op }}</td>
+                
+                                {% for i in data.get_destinos() %}
+                                <td>
+                                    <input class="form-control" type="number"
+                                        name="{{ op }}_{{ i.get_nombre() }}_value"
+                                        min="0"
+                                        max="1000" 
+                                        placeholder="0"
+                                        onclick="this.select()"
+                                        step=".01"
+                                        required>
+                                </td>
+                                {% endfor %}
+                
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
+            <hr>
+            <input class="form-control" id="btn_submit" type="submit" value="Aceptar">
+        </form>  
     </div>
+</div>
 
-    <br><hr>
-
-    <div class="row">
-        <div class="col">
-            <ol class="breadcrumb mb-3">
-                <li class="breadcrumb-item active">
-                    <input class="form-control" id="btn_submit" type="submit" value="Aceptar">
-                </li>
-            </ol>
-        </div>  
-    </div>    
-
-</form>
 
 {% else %}
 

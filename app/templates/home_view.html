@@ -1,94 +1,102 @@
 {% extends './layout.html' %}
 {% block body %}
 <!-- Numero de destinos -->
-
-<form action="{{ url_for('show_dataInput_view') }}" method="POST">
-    <div class="row">
-        <div class="col">
-            <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item active">
-                    <label class="form-control" for="nud_dest">Cantidad de destinos:</label>
-                </li>
-                <li>
-                    <input class="form-control" type="number" name="nud_dest" id="nud_dest" min="1" max="20" placeholder="0" value="0">
-                </li>
-            </ol>
-        </div>
-
-        <div class="col">
-            <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item active">
-                    <label class="form-control" for="nud_options">Numero de opciones</label>
-                </li>
-                <li>
-                    <input class="form-control" type="number" name="nud_options" id="nud_options" min="1" max="20" placeholder="0" value="0">
-                </li>
-            </ol>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xl-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    Ingreso de Nombres
+<h1 class="mt-3">Datos Iniciales</h1>
+<div class="card mb-3">
+    <div class="card-body">
+        <form action="{{ url_for('show_dataInput_view') }}" method="POST">
+            <div class="row">
+                <div class="col-xl-5">
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item active">
+                            <label class="form-control" for="nud_dest">Cantidad de destinos:</label>
+                        </li>
+                        <li>
+                            <input class="form-control" type="number" name="nud_dest" id="nud_dest" min="1" max="20" placeholder="0" value="0" required>
+                        </li>
+                    </ol>
                 </div>
-                <div class="card-body">
-                    <div class="datatable-wrapper" id="destContainer">
-
+        
+                <div class="col-xl-5">
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item active">
+                            <label class="form-control" for="nud_options">Numero de opciones</label>
+                        </li>
+                        <li>
+                            <input class="form-control" type="number" name="nud_options" id="nud_options" min="1" max="20" placeholder="0" value="0" required>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="col-xl-5">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            Ingreso de Nombres
+                        </div>
+                        <div class="card-body">
+                            <div id="destContainer">
+        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-5">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            Ingreso de opciones
+                        </div>
+                        <div class="card-body">
+                            <div id="opContainer">
+        
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    Ingreso de opciones
-                </div>
-                <div class="card-body">
-                    <div class="simple-datatables" id="opContainer">
-
+        
+            <div class="row">
+                <div class="col-xl-5">
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item active">
+                                    <label class="form-control" for="slc_case">Caso:</label>
+                                </li>
+                                <li>
+                                    <select class="form-control" name="slc_case" id="slc_case" required>
+                                        <option value="max">MAX</option>
+                                        <option value="min">MIN</option>
+                                    </select>
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="col-xl-6">
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item active">
+                                    <label class="form-control" for="nud_resAmount">Cantidad de recurso:</label>
+                                </li>
+                                <li>
+                                    <input class="form-control" type="number" name="nud_resAmount" id="nud_resAmount" min="1" max="10000" placeholder="0" value="0" required>
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <hr>
+            <div class="row">
+                <div class="col-xl-5">
+                    <input class="form-control" id="btn_submit" type="submit" value="Siguiente">
+                </div>
+                <div class="col-xl-5">
+                    <input class="form-control" id="btn_clean" type="reset" value="Limpiar" required>
+                </div>
+            </div> 
+        </form>
     </div>
-
-    <br><hr>
-
-    <div class="row">
-        <div class="col">
-            <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item active">
-                    <label class="form-control" for="slc_case">Caso:</label>
-                    <select class="form-control" name="slc_case" id="slc_case">
-                        <option value="max">MAX</option>
-                        <option value="min">MIN</option>
-                    </select>
-                </li>
-            </ol>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <ol class="breadcrumb mb-3">
-                <li class="breadcrumb-item active">
-                    <label class="form-control" for="nud_resAmount">Cantidad de recurso:</label>
-                    <input class="form-control" type="number" name="nud_resAmount" id="nud_resAmount" min="1" max="10000" placeholder="0" value="0">
-                </li>
-            </ol>
-        </div>
-    </div>
-
-    <br><hr>
-    <div class="row">
-        <div class="col">
-            <input class="form-floating" id="btn_submit" type="submit" value="Siguiente">
-            <input class="form-floating" type="reset" value="Limpiar">
-        </div>
-    </div>
-    
-</form>
+</div>
 
 
 {% endblock %}
@@ -103,11 +111,16 @@
     const opField = document.getElementById('opContainer');
     
     const btn_sumbit = document.getElementById('btn_submit');
+    const btn_clean = document.getElementById('btn_clean');
 
     // Functions
-    const fillContainer = (target, num, type, name, value) => {
+    const cleanContainer = (target) => {
+        while(target.firstChild){
+            target.removeChild(target.firstChild);
+        }
+    }
+    const fillContainer = (target, num, type, name, value, min=0, max=20) => {
         
-
         if(isNaN(num) || num <= 0){
             while(target.firstChild){
                 target.removeChild(target.firstChild);
@@ -132,6 +145,11 @@
                 if(value != undefined){
                     input.setAttribute('value', value.toString() + (childrenNum + i));
                 }
+                if (type == 'number'){
+                    input.setAttribute( 'min', min );
+                    input.setAttribute( 'max', max );
+                }
+                input.setAttribute( 'class', 'form-floating' );
                 input.addEventListener('click', () => { input.select(); });
                 target.appendChild(input);
             }
@@ -164,6 +182,7 @@
         return true;
     }
 
+
     // Eventlisteners
     nud_dest.addEventListener('click',() => { nud_dest.select(); });
     nud_dest.addEventListener('input',() => {
@@ -194,5 +213,9 @@
             return;
         }
     });
+    btn_clean.addEventListener('click', () => {
+        cleanContainer(destField);
+        cleanContainer(opField);
+    })
 </script>
 {% endblock %}

@@ -1,96 +1,122 @@
 {% extends './layout.html' %} {% block body %} {% if correct %}
-<div class="row">
-  <div class="col">
-    <h2>Formulacion del problema</h2>
-    <hr />
-    <h3>Funcion objetivo</h3>
-    <ul>
-      <li>{{ data.get_funcion_objetivo() }}</li>
-    </ul>
-    <h3>Restricciones:</h3>
-    <ul>
-      <li><strong>Funcion eficiencia: </strong> {{ data.get_eficiencia() }}</li>
-      <li><strong>Funcion transicion: </strong> {{ data.get_transicion() }}</li>
-    </ul>
-  </div>
+<div class="card mb-4">
+    <div class="card-header">
+        <h1 class="mt-3">Etapas</h1>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <h3>Formulacion del problema</h3>
+                <hr />
+                <h4>Funcion objetivo</h4>
+                <ul>
+                    <li>{{ data.get_funcion_objetivo() }}</li>
+                </ul>
+                <h4>Restricciones:</h4>
+                <ul>
+                    <li>
+                        <strong>Funcion eficiencia: </strong> {{
+                        data.get_eficiencia() }}
+                    </li>
+                    <li>
+                        <strong>Funcion transicion: </strong> {{
+                        data.get_transicion() }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="container-etapas">
+                <div>
+                    {% set r = [] %} {% for x in data.get_etapas() %} {% set _ =
+                    r.append(x) %} {% endfor %} {% set rang = [] %} {% for x in
+                    data.get_rangos() %} {% set _ = rang.append(x) %} {% endfor
+                    %} {% set fs = [] %} {% for x in data.get_fs() %} {% set _ =
+                    fs.append(x) %} {% endfor %} {% set ds = [] %} {% for x in
+                    data.get_formated_ds() %} {% set _ = ds.append(x) %} {%
+                    endfor %} {% for etapa, rango, f, d in r|zip(rang, fs,
+                    ds)|list %}
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>Etapa {{ loop.index }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="datatable-container">
+                                <table
+                                    id="example"
+                                    class="table table-striped"
+                                    style="width: 100%"
+                                >
+                                    <thead>
+                                        <th>x{{loop.index}}</th>
+                                        {% for opt in data.get_opciones() %}
+                                        <th>{{opt}}</th>
+                                        {% endfor %}
+                                        <th>f{{loop.index}}*</th>
+                                        <th>d{{loop.index}}</th>
+                                    </thead>
+                                    <tbody>
+                                        {% for row, i, f, dest in
+                                        etapa.matrix|zip(rango, f, d)| list %}
+                                        <tr>
+                                            <th>{{i}}</th>
+                                            {% for element in row %}
+                                            <td>{{ element }}</td>
+                                            {% endfor %}
+                                            <th>{{f}}</th>
+                                            <th>{{dest}}</th>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <ol class="breadcrumb mb-3">
+                            <li class="breadcrumb-item active">
+                                <input
+                                    class="form-control"
+                                    id="btn_submit"
+                                    type="submit"
+                                    value="Siguiente"
+                                />
+                            </li>
+                            <li>
+                                <input
+                                    class="form-control"
+                                    type="reset"
+                                    value="Limpiar"
+                                />
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="row">
-  <h2>Etapas</h2>
-  <hr />
-  <div id="container-etapas">
-    <div>
-      {% set r = [] %} {% for x in data.get_etapas() %} {% set _ = r.append(x) %} {% endfor %}
-      {% set rang = [] %} {% for x in data.get_rangos() %} {% set _ = rang.append(x) %} {% endfor %}
-      {% set fs = [] %} {% for x in data.get_fs() %} {% set _ = fs.append(x) %} {% endfor %}
-      {% set ds = [] %} {% for x in data.get_formated_ds() %} {% set _ = ds.append(x) %} {% endfor %}
-      {% for etapa, rango, f, d in r|zip(rang, fs, ds)|list %}
-
-      <div class="card mb-4">
-        <div class="card-header">
-          Etapa {{ loop.index }}
-        </div>
-        <div class="card-body">
-          <div class="datatable-container">
-            <table id="example" class="table table-striped" style="width: 100%">
-              <thead>
-                <th>x{{loop.index}}</th>
-                {% for opt in data.get_opciones() %}
-                <th>{{opt}}</th>
-                {% endfor %}
-                <th>f{{loop.index}}*</th>
-                <th>d{{loop.index}}</th>
-              </thead>
-              <tbody>
-                {% for row, i, f, dest in etapa.matrix|zip(rango, f, d)| list %}
-                <tr>
-                  <th>{{i}}</th>
-                  {% for element in row %}
-                  <td>{{ element }}</td>
-                  {% endfor %}
-                  <th>{{f}}</th>
-                  <th>{{dest}}</th>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-
-
-      {% endfor %}
-    </div>
-    <div class="row">
-      <div class="col">
-        <ol class="breadcrumb mb-3">
-          <li class="breadcrumb-item active">
-            <input class="form-control" id="btn_submit" type="submit" value="Siguiente" />
-          </li>
-          <li>
-            <input class="form-control" type="reset" value="Limpiar" />
-          </li>
-        </ol>
-      </div>
-    </div>
-  </div>
-</div>
 {% else %}
 <div>
-  <h1>Error al generar intervalos</h1>
-  <div class="alert alert-danger" role="alert">
-    Error: No Se Puedieron Generar los Intervalos
-  </div>
+    <h1>Error al generar intervalos</h1>
+    <div class="alert alert-danger" role="alert">
+        Error: No Se Puedieron Generar los Intervalos
+    </div>
 </div>
-{% endif %} {% endblock %}
-{% block script%}
+{% endif %} {% endblock %} {% block script%}
 <script>
-  $(document).ready(() => {
-    $("#btn_submit").on("click", () => {
-      console.log("testing")
-      window.location.href = '/sol'
-    })
-  })
+    $(document).ready(() => {
+        $("#btn_submit").on("click", () => {
+            console.log("testing");
+            window.location.href = "/sol";
+        });
+    });
 </script>
 {% endblock %}
