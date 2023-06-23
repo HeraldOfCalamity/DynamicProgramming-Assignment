@@ -122,3 +122,4 @@ class Asignacion:
                     tlist.append(i[0])
             nlist.append(tlist)
         return nlist
+
