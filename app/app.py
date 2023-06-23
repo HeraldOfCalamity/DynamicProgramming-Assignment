@@ -20,6 +20,8 @@ app.jinja_env.filters['zip'] = jinja_zip
 @app.route('/')
 def show_home_view():
     global asig, problemMatrix, sol
+    load_cookie()
+    loadMatrixCookie()
     asig = Asignacion()
     problemMatrix = Matrix()
     sol = Solution()
@@ -117,6 +119,8 @@ def setCookie():
 
 @app.route('/data/etapas/<int:id>')
 def getEtapas(id):
+    load_cookie()
+    loadMatrixCookie()
     error = None
     try:
         asig.get_etapas()[id]

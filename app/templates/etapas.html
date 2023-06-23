@@ -1,36 +1,38 @@
 {% extends './layout.html' %} {% block body %} {% if correct %}
-<div class="card">
-
-    {% set r = [] %} {% for x in data.get_etapas() %} {% set _ = r.append(x) %} {%
+{% set r = [] %} {% for x in data.get_etapas() %} {% set _ = r.append(x) %} {%
     endfor %}
-    {% set rang = [] %} {% for x in data.get_rangos() %} {% set _ = rang.append(x) %} {% endfor %}
-    {% set fs = [] %} {% for x in data.get_fs() %} {% set _ = fs.append(x) %} {% endfor %}
-    {% set ds = [] %} {% for x in data.get_formated_ds() %} {% set _ = ds.append(x) %} {% endfor %}
-    <h2>Etapa: {{id+1}}</h2>
+{% set rang = [] %} {% for x in data.get_rangos() %} {% set _ = rang.append(x) %} {% endfor %}
+{% set fs = [] %} {% for x in data.get_fs() %} {% set _ = fs.append(x) %} {% endfor %}
+{% set ds = [] %} {% for x in data.get_formated_ds() %} {% set _ = ds.append(x) %} {% endfor %}
+<h1 class="mt-3">Etapa: {{id+1}}</h1>
+<div class="card mb-4">
     <div class="card-body">
-        <table id="table" class="table table-striped" style="width: 100%">
-            <thead>
-                <th>x{{id+1}}</th>
-                {% for opt in data.get_opciones() %}
-                <th>{{opt}}</th>
-                {% endfor %}
-                <th>f{{id+1}}*</th>
-                <th>d{{id+1}}</th>
-            </thead>
-            <tbody>
-                {% for item, ran, f, d in r[id].matrix|zip(rang[id], fs[id], ds[id])|list %}
-                <tr>
-                    <th>{{ran}}</th>
-                    {% for col in item %}
-                    <td>{{ col }}</td>
-                    {% endfor %}
-                    <th>{{f }}</th>
-                    <th>{{d}}</th>
-                </tr>
-
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="datatable-wrapper datatable-loading no-footer fixed-columns">
+            <div class="datatable-container">
+                <table id="table" class="datatable-table" style="width: 100%">
+                    <thead>
+                        <th>x{{id+1}}</th>
+                        {% for opt in data.get_opciones() %}
+                        <th>{{opt}}</th>
+                        {% endfor %}
+                        <th>f{{id+1}}*</th>
+                        <th>d{{id+1}}</th>
+                    </thead>
+                    <tbody>
+                        {% for item, ran, f, d in r[id].matrix|zip(rang[id], fs[id], ds[id])|list %}
+                        <tr>
+                            <th>{{ran}}</th>
+                            {% for col in item %}
+                            <td>{{ col }}</td>
+                            {% endfor %}
+                            <th>{{f }}</th>
+                            <th>{{d}}</th>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     {% if id == 0 %}
         <div style="display: flex; justify-content: space-between;">
