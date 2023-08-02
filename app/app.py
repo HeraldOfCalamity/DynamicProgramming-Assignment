@@ -63,16 +63,19 @@ def destParser(datos):
         dset.append(Destino(nombre, benefit=beneficio, rango=range))
     return dset
 def load_cookie():
-    asig_data = json.loads(request.cookies.get('asig'))
-    opNum = asig_data['opNum']
-    destNum = asig_data['destNum']
-    resNum = int(asig_data['resNum'])
-    caso = str(asig_data['caso'])
+    if request.cookies.get('asig') == None:
+        pass
+    else:
+        asig_data = json.loads(request.cookies.get('asig'))
+        opNum = asig_data['opNum']
+        destNum = asig_data['destNum']
+        resNum = int(asig_data['resNum'])
+        caso = str(asig_data['caso'])
 
-    asig.set_destinos(destParser(destNum))
-    asig.set_opciones(opNum)
-    asig.set_caso(caso)
-    asig.set_recurso(resNum)
+        asig.set_destinos(destParser(destNum))
+        asig.set_opciones(opNum)
+        asig.set_caso(caso)
+        asig.set_recurso(resNum)
 
 @app.route('/data/setUp', methods=['POST', 'GET'])
 def show_dataInput_view():
@@ -148,8 +151,11 @@ def createMatrixCookie():
     return resp
 
 def loadMatrixCookie():
-    matrix_data = json.loads(request.cookies.get('matrix'))
-    asig.set_destinos(destParser(matrix_data['dests']))
+    if request.cookies.get('matrix') == None:
+        pass
+    else:
+        matrix_data = json.loads(request.cookies.get('matrix'))
+        asig.set_destinos(destParser(matrix_data['dests']))
 
 @app.route('/data/intervals', methods=['POST', 'GET'])
 def show_interval_view():
