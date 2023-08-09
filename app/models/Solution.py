@@ -51,7 +51,7 @@ class Solution:
         for idx, item in enumerate(partsol):
             self.answer.append([])
             for x, pos in zip(item, range(-len(item)+1, 1)):
-                row = [self.get_value_key(self.partialAnswer[pos*-1], x), x, self.get_value_key(self.partialAnswer[pos*-1], x)-x]
+                row = [self.get_value_key(self.partialAnswer[pos*-1], x)-x, x, self.get_value_key(self.partialAnswer[pos*-1], x)-x]
                 self.answer[idx].append(row)
 
         return self.answer

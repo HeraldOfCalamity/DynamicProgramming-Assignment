@@ -39,14 +39,14 @@
                     ds)|list %}
 
                     <div class="card mb-4">
-                        <div class="card-header">
+                        <div class="card-header bg-dark text-light">
                             <h5>Etapa {{ loop.index }}</h5>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body bg-dark-subtle">
                             <div class="datatable-container">
                                 <table
                                     id="example"
-                                    class="table table-striped"
+                                    class="table table-striped border border-dark"
                                     style="width: 100%"
                                 >
                                     <thead>
@@ -65,7 +65,7 @@
                                             {% for element in row %}
                                             <td>{{ element }}</td>
                                             {% endfor %}
-                                            <th>{{f}}</th>
+                                            <th style="color:#000; background-color: #a6e9d5;">{{f}}</th>
                                             <th>{{dest}}</th>
                                         </tr>
                                         {% endfor %}
@@ -86,13 +86,6 @@
                                     id="btn_submit"
                                     type="submit"
                                     value="Siguiente"
-                                />
-                            </li>
-                            <li>
-                                <input
-                                    class="form-control"
-                                    type="reset"
-                                    value="Limpiar"
                                 />
                             </li>
                         </ol>
