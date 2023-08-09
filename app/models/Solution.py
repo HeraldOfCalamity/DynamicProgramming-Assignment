@@ -1,4 +1,8 @@
 import copy
+
+import numpy
+
+
 class Solution:
 
     def __init__(self):
@@ -18,6 +22,7 @@ class Solution:
 
     def showPr(self):
         return self.partialAnswer
+    
     def create_answer(self):
         cpyPartialAnswer = copy.deepcopy(self.partialAnswer)
         _, dict = cpyPartialAnswer.popitem()
@@ -32,7 +37,7 @@ class Solution:
                 partSol[index].append(cpyPartialAnswer[i].get(key))
                 keysS.append(key - cpyPartialAnswer[i].get(key))
                 keysS.pop(0)
-        print(partSol)
+        print(f"partial -> {partSol}")
         return partSol
 
     def get_value_key(self, diccionario, valor):
@@ -48,12 +53,17 @@ class Solution:
     def createSolutionMatrix(self):
         self.answer = []
         partsol = self.create_answer()
+        sobra = 0
         for idx, item in enumerate(partsol):
             self.answer.append([])
-            for x, pos in zip(item, range(-len(item)+1, 1)):
-                row = [self.get_value_key(self.partialAnswer[pos*-1], x), x, self.get_value_key(self.partialAnswer[pos*-1], x)-x]
+            for idx2, (x, pos) in enumerate(zip(item, range(-len(item)+1, 1))):
+                if idx2 == 0:
+                    row = [self.get_value_key(self.partialAnswer[pos*-1], x), x, self.get_value_key(self.partialAnswer[pos * -1], x) - x]
+                    sobra = self.get_value_key(self.partialAnswer[pos * -1], x) - x
+                else:
+                    row = [sobra, x, sobra - x]
+                    sobra -= x
                 self.answer[idx].append(row)
 
         return self.answer
-
 

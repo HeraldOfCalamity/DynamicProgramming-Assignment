@@ -82,15 +82,6 @@ def show_dataInput_view():
     error = ''
     try:
         load_cookie()
-        # opNum = int(request.form.get('nud_options'))
-        # destNum = int(request.form.get('nud_dest'))
-        # resNum = int(request.form.get('nud_resAmount'))
-        # caso = str(request.form.get('slc_case'))
-        #
-        # asig.set_destinos(generate_dest_list(destNum))
-        # asig.set_opciones(generate_op_list(opNum))
-        # asig.set_caso(caso)
-        # asig.set_recurso(resNum)
         correct = True
 
     except Exception as ex:
@@ -155,6 +146,7 @@ def loadMatrixCookie():
         pass
     else:
         matrix_data = json.loads(request.cookies.get('matrix'))
+        print(f"data matrix -> {matrix_data}")
         asig.set_destinos(destParser(matrix_data['dests']))
 
 @app.route('/data/intervals', methods=['POST', 'GET'])
@@ -231,6 +223,7 @@ def show_solution_view():
         correct = False
         error = ex
     finally:
+        print(error)
         return render_template('solution_view.html',correct=correct, data=asig, error=error)
 
 @app.route('/manual')
