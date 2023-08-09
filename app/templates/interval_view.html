@@ -1,8 +1,6 @@
 {% extends './layout.html' %} {% block body %} {% if correct %}
+<h1 class="my-3">Etapas</h1>
 <div class="card mb-4">
-    <div class="card-header">
-        <h1 class="mt-3">Etapas</h1>
-    </div>
     <div class="card-body">
         <div class="row">
             <div class="col">
@@ -77,19 +75,13 @@
 
                     {% endfor %}
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <ol class="breadcrumb mb-3">
-                            <li class="breadcrumb-item active">
-                                <input
-                                    class="form-control"
-                                    id="btn_submit"
-                                    type="submit"
-                                    value="Siguiente"
-                                />
-                            </li>
-                        </ol>
-                    </div>
+                <hr>
+                <div class="d-flex">
+                    <input class="btn btn-success flex-fill"
+                        id="btn_submit"
+                        type="submit"
+                        value="Siguiente"
+                    />
                 </div>
             </div>
         </div>
