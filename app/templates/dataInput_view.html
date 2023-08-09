@@ -2,21 +2,19 @@
 {% block body %}
 
 {% if correct %}
-<div class="card mb-4">
-    <div class="card-header">
-        <h1 class="mt-3">Ingreso de Beneficios</h1>
-    </div>
+<h1 class="my-3">Ingreso de Beneficios</h1>
+<div class="card mb-4 bg-secondary-subtle">
     <div class="card-body">
         <form action="{{ url_for('createMatrixCookie') }}" method="POST">
             <div class="datatable-wrapper datatable-loading no-footer fixed-columns">
                 <div class="datatable-container">
-                    <table class="datatable-table " id="test">
+                    <table class="table border border-dark" id="test">
                         <thead>
                             <tr>
-                                <th>...</th>
+                                <th class="text-center text-light bg-dark">...</th>
                 
                                 {% for dest in data.get_destinos() %}
-                                <th>{{ dest.get_nombre() }}</th>
+                                <th class="text-center text-light bg-dark">{{ dest.get_nombre() }}</th>
                                 {% endfor %}
                 
                             </tr>
@@ -24,11 +22,11 @@
                         <tbody id="tbl_r">
                             {% for op in data.get_opciones() %}
                             <tr id="r_row_{{ op }}">
-                                <td>{{ op }}</td>
+                                <th class="text-center text-light bg-dark">{{ op }}</th>
                 
                                 {% for i in data.get_destinos() %}
                                 <td>
-                                    <input class="form-control" type="number"
+                                    <input class="form-control text-center border border-secondary" type="number"
                                         name="{{ op }}_{{ i.get_nombre() }}_value"
                                         min="0"
                                         max="1000" 
@@ -46,7 +44,12 @@
                 </div>
             </div>
             <hr>
-            <input class="form-control" id="btn_submit" type="submit" value="Aceptar">
+            <div class="d-flex">
+                <input class="btn btn-success flex-fill" 
+                id="btn_submit" 
+                type="submit" 
+                value="Resolver">
+            </div>
         </form>  
     </div>
 </div>
