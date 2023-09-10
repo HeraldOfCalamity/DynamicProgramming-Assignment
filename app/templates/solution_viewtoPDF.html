@@ -1,4 +1,3 @@
-{% extends './layout.html' %} {% block body %} {% if correct %}
 <h1 class="my-3">Soluciones</h1>
 <div class="card mb-4 bg-secondary-subtle">
   <div class="card-body">
@@ -60,21 +59,4 @@
       </div>
     </div>
   </div>
-  <input type="button" onclick="location.href='/toPdf'" value="a PDF" />
 </div>
-
-{% else %}
-
-<div>
-  <h1>Error, ingrese datos validos de inicio</h1>
-  <div class="alert alert-danger" role="alert">
-    Error: Ingersar Datos Validos
-  </div>
-</div>
-{% endif %} {% endblock %} { % block script %}
-<script>
-  $(document).ready(() => {
-    $("#test").DataTable();
-  });
-</script>
-{ % endblock % }
