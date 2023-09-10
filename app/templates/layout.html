@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asignacion Tabla Definida</title>
+    <title>Programacion dinamica</title>
     {% block style %}{% endblock %}
 
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
@@ -19,7 +19,7 @@
     <!-- inicio nav -->
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="{{ url_for('show_home_view') }}">Asignacion</a>
+        <a class="navbar-brand ps-3" href="{{ url_for('show_home') }}">Programacion Dinamica</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                 class="fas fa-bars"></i></button>
@@ -30,12 +30,10 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Datos Iniciales</div>
-                        <a class="nav-link" href="/">
-                            <!-- <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div> -->
-                            Nuevo Problema
-                        </a>
-                        <div class="sb-sidenav-menu-heading">Solucion</div>
+                        <!-- Seccion asignacion -->
+                        <a class="nav-link active" href="/">Inicio</a>
+                        <div class="sb-sidenav-menu-heading">Asignacion T.D.</div>
+                        <a class="nav-link" href="/asignacion">Nuevo Problema</a>
                         {% if data.get_etapas() %}
                         {% set r = [] %} {% for x in data.get_etapas() %} {% set _ = r.append(x) %} {% endfor %}
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
@@ -67,8 +65,14 @@
                         </a>
                         <a class="nav-link" href="/manual">
                             <!-- <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div> -->
-                            Manual de usuario
+                            Tutorial
                         </a>
+
+
+                        <!-- Seccion grafos -->
+                        <div class="sb-sidenav-menu-heading">Ruta mas corta</div>
+                        
+                        
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">

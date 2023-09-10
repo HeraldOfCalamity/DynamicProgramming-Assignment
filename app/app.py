@@ -18,14 +18,23 @@ def jinja_zip(*args):
 
 app.jinja_env.filters['zip'] = jinja_zip
 @app.route('/')
-def show_home_view():
+def show_home():
+    return render_template('true_home_view.html', data=asig)
+
+@app.route('/caminocorto')
+def show_graph_view():
+    return 'hola'
+
+@app.route('/asignacion')
+def show_asig_view():
     global asig, problemMatrix, sol
     load_cookie()
     loadMatrixCookie()
     asig = Asignacion()
     problemMatrix = Matrix()
     sol = Solution()
-    return render_template('home_view.html', data=asig)
+    return render_template('asig_view.html', data=asig)
+
 
 def generate_dest_list(num: int) -> list:
     dest_list = []
