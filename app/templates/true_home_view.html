@@ -1,0 +1,56 @@
+{% extends './layout.html' %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles-2.css') }}">
+{% endblock %}
+{% block body %}
+<section class="mb-3 text-center">
+    <header>
+        <h1>Programacion Dinamica</h1>
+    </header>
+</section>
+<div id="carouselExampleIndicators" class="carousel carousel-dark slide">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+            aria-label="Slide 2"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <a href="{{ url_for('show_asig_view') }}">
+                <img src="../static/images/asignacion-img.png" class="d-block w-50 mx-auto mt-auto mb-3"
+                    alt="Asignacion">
+                <div class="carousel-caption d-none d-md-block text-dark bg-blur">
+                    <h5>Asignacion T.D.</h5>
+                    <p>Resuelve problemas de asignacion con tabla definida (T.D.), encontrando el minimo costo o maximo
+                        beneficio.</p>
+                </div>
+            </a>
+        </div>
+        <div class="carousel-item">
+            <a href="{{ url_for('show_graph_view') }}">
+                <img src="../static/images/directed-network.png" class="d-block w-60 mx-auto mt-auto mb-3" alt="Grafo">
+                <div class="carousel-caption d-none d-md-block text-dark bg-blur">
+                    <h5>Ruta mas corta</h5>
+                    <p>Encuentra el camino mas corto entre dos nodos de un grafo dado.</p>
+                </div>
+            </a>
+        </div>
+
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+<!-- end carousel -->
+
+<!-- Insertar algo para ocupar el espacio xd -->
+
+{% endblock %}

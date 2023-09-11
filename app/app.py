@@ -26,14 +26,23 @@ app.jinja_env.filters['zip'] = jinja_zip
 
 
 @app.route('/')
-def show_home_view():
+def show_home():
+    return render_template('true_home_view.html', data=asig)
+
+@app.route('/graph')
+def show_graph_view():
+    return render_template('graph_view.html', data=None)
+
+@app.route('/asignacion')
+def show_asig_view():
     global asig, problemMatrix, sol
     load_cookie()
     loadMatrixCookie()
     asig = Asignacion()
     problemMatrix = Matrix()
     sol = Solution()
-    return render_template('home_view.html', data=asig)
+    return render_template('asig_view.html', data=asig)
+
 
 
 def generate_dest_list(num: int) -> list:
@@ -130,6 +139,19 @@ def setCookie():
         resp.set_cookie('asig', json.dumps(toCookie))
         return resp
 
+@app.route('/graph/sol', methods=["POST"])
+def get_graph_sol():
+    graph = {}
+    
+    nud_nodes = int(request.form.get('nud_nodes'))
+    for i in range(1, nud_nodes+1):
+        dests = request.form.getlist(f'dests_{i}')
+        weights = []
+        for dest in dests:
+            weights.append(request.form.get(f'costo_{i}_{dest}'))
+        graph[i] = {'name':request.form.get(f'desde_{i}'), 'sig':dests, 'weights':weights}
+    return render_template('graph_solution.html', graph=graph)
+    # return nud_nodes
 
 @app.route('/data/etapas/<int:id>')
 def getEtapas(id):
@@ -171,6 +193,8 @@ def loadMatrixCookie():
         matrix_data = json.loads(request.cookies.get('matrix'))
         # print(f"data matrix -> {matrix_data}")
         asig.set_destinos(destParser(matrix_data['dests']))
+
+
 
 
 @app.route('/data/intervals', methods=['POST', 'GET'])

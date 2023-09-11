@@ -1,14 +1,17 @@
 {% extends './layout.html' %}
 {% block body %}
 <!-- Numero de destinos -->
-<h1 class="mt-3">Datos Iniciales</h1>
+<h1 class="mt-3">Asignacion</h1>
 <div class="card mb-3 bg-secondary-subtle">
+    <div class="card-header">
+        <h3 class="mt-3">Datos iniciales</h3>
+    </div>
     <div class="card-body">
         <form action="{{ url_for('setCookie') }}" method="POST">
             <div class="row">
                 <div class="col col-xl-6">
                     <div class="input-group mb-4">
-                        <span class="input-group-text bg-secondary text-light border border-secondary">Nro. de destinos:</span>
+                        <span class="input-group-text bg-secondary text-light border border-secondary"><strong>Nro. de destinos</strong> <small>(columnas)</small>:</span>
                         <input class="form-control form-control-sm border border-secondary" 
                             type="number" 
                             name="nud_dest" 
@@ -18,13 +21,13 @@
                             placeholder="0" 
                             value="0" 
                             required
-                            >
+                        >
                     </div>
                 </div>
         
                 <div class="col col-xl-6">
                     <div class="input-group mb-4">
-                        <span class="input-group-text bg-secondary text-light border border-secondary">Nro. de opciones:</span>
+                        <span class="input-group-text bg-secondary text-light border border-secondary"><strong>Nro. de opciones</strong> <small>(filas)</small>: </span>
                         <input class="form-control border border-secondary" 
                             type="number" 
                             name="nud_options" 
