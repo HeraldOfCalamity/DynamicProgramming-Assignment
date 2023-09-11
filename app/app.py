@@ -312,7 +312,7 @@ def c_graph():
 @app.route('/get_imageGraph')
 def getImageGraph():
     saveGraph('temp.jpg')
-    return send_file('./temp/temp.jpg', as_attachment=True, download_name="grafo.jpg")
+    return send_file('./static/images/temp.jpg', as_attachment=True, download_name="grafo.jpg")
 
 
 @app.route("/get_shortest_path")
