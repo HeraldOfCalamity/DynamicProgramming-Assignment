@@ -157,7 +157,7 @@ def get_graph_sol():
         for dest in dests:
             weights.append(request.form.get(f'costo_{i}_{dest}'))
         dests = [int(x) for x in dests]
-        weights = [int(x) for x in weights]
+        weights = [float(x) for x in weights]
         graph[i] = {'name': request.form.get(
             f'desde_{i}'), 'sig': dests, 'weights': weights}
     error = ''
@@ -187,10 +187,10 @@ def get_or_dest():
     try:
         origen = request.form.get('origen')
         destino = request.form.get('destino')
-        print(origen)
-        print(destino)
-        costominimo = find_shortest_distance(origen, destino)
-        caminominimo = find_shortest_path(origen, destino)
+        print(type(origen))
+        print(type(destino))
+        costominimo = find_shortest_distance(int(origen), int(destino))
+        caminominimo = find_shortest_path(int(origen), int(destino))
         saveGraphr("temp2.jpg", caminominimo)
         correct = True
     except Exception as e:

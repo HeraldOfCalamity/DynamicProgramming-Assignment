@@ -13,8 +13,8 @@ def new_graph():
 
 def fillNodes(nodes):
     for node in nodes:
-        print(node)
-        G.add_node(nodes[node]["name"])
+        # print(node)
+        G.add_node(node)
 
 
 def fill_edges(nodes):
@@ -25,8 +25,9 @@ def fill_edges(nodes):
         if isinstance(sig, list) and isinstance(we, list):
             for s, w in zip(sig, we):
                 # Convertir s a cadena para que coincida con los nodos
-                G.add_edge(name, str(s), weight=w)
-    # print(G.nodes())
+                print(type(s), type(i))
+                G.add_edge(i, s, weight=w)
+    print(f"fill ->     {G.nodes()}")
     # print(G.edges())
 
 
@@ -65,6 +66,7 @@ def saveGraph(naem):
     edge_labels = nx.get_edge_attributes(G, "weight")
     nx.draw_networkx_edge_labels(G, pos, edge_labels)
 
+    # print(G.nodes())
     plt.axis("off")
     plt.tight_layout()
     plt.savefig(f'./app/static/images/{naem}')

@@ -136,7 +136,7 @@
         const row = document.createElement("tr");
         row.innerHTML = `
                     <th class="text-center text-light bg-dark">${i}</th>
-                    <td><input value=${i} type="text" name="desde_${i}" id="desde_${i}" class="text-center form-control form-control-sm" onclick="this.select();"></td>
+                    <td><input value=${i} type="text" name="desde_${i}" id="desde_${i}" class="text-center form-control form-control-sm" onclick="this.select();" readonly></td>
                     <td>
                         <div style="height: 150px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;">
                             ${generateCheckboxes(num, i)}
