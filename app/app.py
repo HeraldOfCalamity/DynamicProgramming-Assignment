@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response, redirect, send_file
+from flask import Flask, render_template, request, make_response, redirect, send_file, jsonify
 import numpy as np
 from models.Etapa import Etapa
 from models.Destino import Destino
@@ -7,12 +7,15 @@ from config import config
 from models.Matrix import Matrix
 from models.Solution import Solution
 from models.exportToPdf import create_pdf
+from models.Grafo import *
 import json
-
+from flask_cors import *
 app = Flask(__name__)
 asig = Asignacion()
 problemMatrix = Matrix()
 sol = Solution()
+cors = CORS(app, resources={r"/create_graph": {"origins": "*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 def jinja_zip(*args):
@@ -254,6 +257,46 @@ def toPdfo():
 @app.route('/manual')
 def manual():
     return render_template('manual_usuario.html', data=asig)
+
+
+@app.route('/create_graph', methods=["POST"])
+@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
+def c_graph():
+    new_graph()
+    json = request.get_json()
+
+    if json is None:
+        return jsonify({'error': 'Invalid JSON data'}), 400
+    # print(json['1'])
+    fillNodes(json)
+    fill_edges(json)
+
+    response = {"Message": f"Number of nodes: ",
+                "Message2": f"Number of Edges "}
+    # response = {"Message": f"test"}
+    print(json)
+    return jsonify(response)
+
+
+@app.route('/get_imageGraph')
+def getImageGraph():
+    saveGraph('temp.jpg')
+    return send_file('./temp/temp.jpg', as_attachment=True, download_name="grafo.jpg")
+
+
+@app.route("/get_shortest_path")
+def get_shorttestPath():
+    r = request.get_json()
+    if r is None:
+        return jsonify({"error": "Invalid"}), 400
+
+    source = r["source"]
+    dst = r["target"]
+    path = find_shortest_path(source, dst)
+    distance = find_shortest_distance(source, dst)
+
+    print(path, distance)
+    return "Get"
 
 
 if __name__ == '__main__':
