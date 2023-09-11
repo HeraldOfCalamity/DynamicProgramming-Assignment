@@ -1,113 +1,140 @@
-{% extends './layout.html' %}
-{% block body %}
+{% extends './layout.html' %} {% block body %}
 <h1 class="mt-3">Ruta mas corta</h1>
 <div class="card mb-3 bg-secondary-subtle">
-    <div class="card-header">
-        <h3>Datos iniciales</h3>
-    </div>
-    <div class="card-body">
-        <div class="row">
+  <div class="card-header">
+    <h3>Datos iniciales</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <!-- Button trigger modal -->
 
-
-            <!-- Button trigger modal -->
-
-
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-fullscreen">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Vista previa del grafo</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div>
-                                <svg id="graph"></svg>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-fullscreen">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Vista previa del grafo
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
-
+            <div class="modal-body">
+              <div>
+                <svg id="graph"></svg>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <form action="{{ url_for('get_graph_sol') }}" method="POST">
-                    <div class="row">
-                        <div class="col-3">
-
-                            <div class="input-group mb-4">
-                                <span class="input-group-text bg-secondary text-light border border-secondary">
-                                    <strong>Nro. de nodos:</strong>
-                                </span>
-                                <input class="form-control form-control-sm border border-secondary" type="number"
-                                    name="nud_nodes" id="nud_nodes" min="1" max="20" placeholder="0" value="0" required onclick="this.select();">
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <input class="btn btn-success mb-2 mx-2" id="btn_submit" type="submit" value="Resolver">
-                        </div>
-                        <!-- <div class="col-3">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <form action="{{ url_for('get_graph_sol') }}" method="POST">
+          <div class="row">
+            <div class="col-3">
+              <div class="input-group mb-4">
+                <span
+                  class="input-group-text bg-secondary text-light border border-secondary"
+                >
+                  <strong>Nro. de nodos:</strong>
+                </span>
+                <input
+                  class="form-control form-control-sm border border-secondary"
+                  type="number"
+                  name="nud_nodes"
+                  id="nud_nodes"
+                  min="1"
+                  max="20"
+                  placeholder="0"
+                  value="0"
+                  required
+                  onclick="this.select();"
+                />
+              </div>
+            </div>
+            <div class="col-3">
+              <input
+                class="btn btn-success mb-2 mx-2"
+                id="btn_submit"
+                type="submit"
+                value="Resolver"
+              />
+            </div>
+            <!-- <div class="col-3">
                             <button id="vistaPrevia" type="button" class="btn btn-success" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal">
                                 Vista previa
                             </button>
                         </div> -->
-                    </div>
+          </div>
 
-                    <div class="datatable-wrapper datatable-loading no-footer fixed-columns">
-                        <div class="datatable-container">
-                            <table class="table border border-dark" id="test">
-                                <thead>
-                                    <th class="text-center text-light bg-dark">n</th>
-                                    <th class="text-center text-light bg-dark">Desde</th>
-                                    <th class="text-center text-light bg-dark">Hasta</th>
-                                    <th class="text-center text-light bg-dark">Costos</th>
-                                </thead>
-                                <tbody id="tableBody">
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </form>
+          <div
+            class="datatable-wrapper datatable-loading no-footer fixed-columns"
+          >
+            <div class="datatable-container">
+              <table class="table border border-dark" id="test">
+                <thead>
+                  <th class="text-center text-light bg-dark">n</th>
+                  <th class="text-center text-light bg-dark">Desde</th>
+                  <th class="text-center text-light bg-dark">Hasta</th>
+                  <th class="text-center text-light bg-dark">Costos</th>
+                </thead>
+                <tbody id="tableBody"></tbody>
+              </table>
             </div>
-        </div>
-
-
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 
-{% endblock %}
-{% block script %}
+{% endblock %} {% block script %}
 <script src="https://d3js.org/d3.v6.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const btn_sumbit = document.getElementById('btn_submit');
-        const nudNodesInput = document.getElementById('nud_nodes');
-        const tableBody = document.getElementById('tableBody');
-        const maxNodes = parseInt(nudNodesInput.getAttribute('max'), 10);
-        const vistaPrevia = document.getElementById('vistaPrevia');
+  document.addEventListener("DOMContentLoaded", function () {
+    const btn_sumbit = document.getElementById("btn_submit");
+    const nudNodesInput = document.getElementById("nud_nodes");
+    const tableBody = document.getElementById("tableBody");
+    const maxNodes = parseInt(nudNodesInput.getAttribute("max"), 10);
+    const vistaPrevia = document.getElementById("vistaPrevia");
 
-        nudNodesInput.addEventListener('input', function () {
-            const numOfNodes = parseInt(nudNodesInput.value, 10);
-            if (numOfNodes <= maxNodes) {
-                generateRows(numOfNodes);
-            } else {
-                tableBody.innerHTML = '';
-            }
-        });
+    nudNodesInput.addEventListener("input", function () {
+      const numOfNodes = parseInt(nudNodesInput.value, 10);
+      if (numOfNodes <= maxNodes) {
+        generateRows(numOfNodes);
+      } else {
+        tableBody.innerHTML = "";
+      }
+    });
 
-        function generateRows(num) {
-            tableBody.innerHTML = ''; // Clear existing rows
+    function generateRows(num) {
+      tableBody.innerHTML = ""; // Clear existing rows
 
-            for (let i = 1; i <= num; i++) { // Use one-based indexing here
-                const row = document.createElement('tr');
-                row.innerHTML = `
+      for (let i = 1; i <= num; i++) {
+        // Use one-based indexing here
+        const row = document.createElement("tr");
+        row.innerHTML = `
                     <th class="text-center text-light bg-dark">${i}</th>
                     <td><input value=${i} type="text" name="desde_${i}" id="desde_${i}" class="text-center form-control form-control-sm" onclick="this.select();"></td>
                     <td>
@@ -117,17 +144,18 @@
                     </td>
                     <td id="costos_${i}"></td>
                 `;
-                tableBody.appendChild(row);
-            }
-        }
-    });
+        tableBody.appendChild(row);
+      }
+    }
+  });
 
-    function generateCheckboxes(num, rowIndex) {
-        let checkboxesHTML = '';
+  function generateCheckboxes(num, rowIndex) {
+    let checkboxesHTML = "";
 
-        for (let i = 1; i <= num; i++) { // Use one-based indexing here
-            if (i == rowIndex) continue;
-            checkboxesHTML += `
+    for (let i = 1; i <= num; i++) {
+      // Use one-based indexing here
+      if (i == rowIndex) continue;
+      checkboxesHTML += `
                 <div class="form-check">
                     <input class="form-check-input" name="dests_${rowIndex}" type="checkbox" value="${i}" id="checkbox_${rowIndex}_${i}" onchange="updateCheckedOptions(${rowIndex})">
                     <label class="form-check-label" for="checkbox_${rowIndex}_${i}">
@@ -135,18 +163,18 @@
                     </label>
                 </div>
             `;
-        }
-
-        return checkboxesHTML;
     }
 
-    function updateCheckedOptions(rowIndex) {
-        const checkedOptions = collectCheckedCheckboxes(rowIndex);
-        const costosElement = document.getElementById(`costos_${rowIndex}`);
-        costosElement.innerHTML = '';
-        let content = '<div class="row row-cols-5">';
-        checkedOptions.forEach((item) => {
-            content += `
+    return checkboxesHTML;
+  }
+
+  function updateCheckedOptions(rowIndex) {
+    const checkedOptions = collectCheckedCheckboxes(rowIndex);
+    const costosElement = document.getElementById(`costos_${rowIndex}`);
+    costosElement.innerHTML = "";
+    let content = '<div class="row row-cols-3">';
+    checkedOptions.forEach((item) => {
+      content += `
             <div class="col">
                 <div class="input-group mb-4">
                     <span class="input-group-text bg-secondary text-light border border-secondary">
@@ -157,154 +185,163 @@
                 </div>
             </div>    
             `;
-        });
-        content += '</div>';
-        costosElement.innerHTML = content;
-    }
-
-    let conexiones = {};
-
-    function collectCheckedCheckboxes(rowIndex) {
-        const checkboxes = document.querySelectorAll(`input[name="dests_${rowIndex}"]:checked`);
-        const checkedOptions = Array.from(checkboxes).map((checkbox) => {
-            return checkbox.value;
-        });
-        conexiones[rowIndex] = checkedOptions;
-        return checkedOptions;
-    }
-
-    // ===============================================================
-    // D3.js Graph Drawing
-    // ===============================================================
-
-    let nodes = [];
-    let links = [];
-
-    // ...
-    vistaPrevia.addEventListener('click', () => {
-        nodes = [];
-        links = [];
-
-        for (let i = 1; i <= tableBody.children.length; i++) {
-            const desdeInput = document.getElementById(`desde_${i}`);
-            nodes.push({ id: `desde_${i}`, name: desdeInput.value });
-        }
-
-        for (let clave in conexiones) {
-            for (con in conexiones[clave]) {
-                const sourceId = `desde_${clave}`;
-                const targetId = `desde_${conexiones[clave][con]}`;
-                links.push({ source: sourceId, target: targetId, weight: 3 });
-            }
-        }
-        console.log(links);
-        updateGraph();
     });
-    // ...
+    content += "</div>";
+    costosElement.innerHTML = content;
+  }
 
+  let conexiones = {};
 
-    const svgWidth = 600;
-    const svgHeight = 400;
+  function collectCheckedCheckboxes(rowIndex) {
+    const checkboxes = document.querySelectorAll(
+      `input[name="dests_${rowIndex}"]:checked`
+    );
+    const checkedOptions = Array.from(checkboxes).map((checkbox) => {
+      return checkbox.value;
+    });
+    conexiones[rowIndex] = checkedOptions;
+    return checkedOptions;
+  }
 
-    const svg = d3.select("#graph")
-        .attr("width", svgWidth)
-        .attr("height", svgHeight);
+  // ===============================================================
+  // D3.js Graph Drawing
+  // ===============================================================
 
-    const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id((d) => d.id))
-        .force("charge", d3.forceManyBody().strength(-200))
-        .force("center", d3.forceCenter(svgWidth / 2, svgHeight / 2));
+  let nodes = [];
+  let links = [];
 
-    function updateGraph() {
-        const linkElements = svg.selectAll(".link")
-            .data(links, (d) => d.source + "-" + d.target);
+  // ...
+  vistaPrevia.addEventListener("click", () => {
+    nodes = [];
+    links = [];
 
-        linkElements.exit().remove();
-
-        const linkEnter = linkElements.enter().append("line")
-            .attr("class", "link")
-            .attr("stroke", "gray")
-            .attr("stroke-width", (d) => d.weight);
-
-        const nodeElements = svg.selectAll(".node")
-            .data(nodes, (d) => d.id);
-
-        nodeElements.exit().remove();
-
-        const nodeEnter = nodeElements.enter().append("circle")
-            .attr("class", "node")
-            .attr("r", 15)
-            .attr("fill", "blue")
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
-
-        const nodeLabels = svg.selectAll(".node-label")
-            .data(nodes, (d) => d.id);
-
-        nodeLabels.exit().remove();
-
-        const nodeLabelsEnter = nodeLabels.enter().append("text")
-            .attr("class", "node-label")
-            .attr("text-anchor", "middle")
-            .attr("fill", "white")
-            .text((d) => d.name);
-
-        const linkLabels = svg.selectAll(".link-label")
-            .data(links);
-
-        linkLabels.exit().remove();
-
-        const linkLabelsEnter = linkLabels.enter().append("text")
-            .attr("class", "link-label")
-            .attr("text-anchor", "middle")
-            .attr("fill", "black")
-            .text((d) => `Peso: ${d.weight}`);
-
-        simulation.nodes(nodes).on("tick", ticked);
-
-        simulation.force("link").links(links);
-
-        function dragstarted(d) {
-            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-            d.fx = d.x;
-            d.fy = d.y;
-        }
-
-        function dragged(d) {
-            d.fx = d3.event.x;
-            d.fy = d3.event.y;
-        }
-
-        function dragended(d) {
-            if (!d3.event.active) simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-        }
-
-        function ticked() {
-            nodeEnter
-                .attr("cx", (d) => d.x)
-                .attr("cy", (d) => d.y);
-
-            linkEnter
-                .attr("x1", (d) => d.source.x)
-                .attr("y1", (d) => d.source.y)
-                .attr("x2", (d) => d.target.x)
-                .attr("y2", (d) => d.target.y);
-
-            nodeLabelsEnter
-                .attr("x", (d) => d.x)
-                .attr("y", (d) => d.y);
-
-            linkLabelsEnter
-                .attr("x", (d) => (d.source.x + d.target.x) / 2)
-                .attr("y", (d) => (d.source.y + d.target.y) / 2);
-        }
+    for (let i = 1; i <= tableBody.children.length; i++) {
+      const desdeInput = document.getElementById(`desde_${i}`);
+      nodes.push({ id: `desde_${i}`, name: desdeInput.value });
     }
 
-</script>
+    for (let clave in conexiones) {
+      for (con in conexiones[clave]) {
+        const sourceId = `desde_${clave}`;
+        const targetId = `desde_${conexiones[clave][con]}`;
+        links.push({ source: sourceId, target: targetId, weight: 3 });
+      }
+    }
+    console.log(links);
+    updateGraph();
+  });
+  // ...
 
+  const svgWidth = 600;
+  const svgHeight = 400;
+
+  const svg = d3
+    .select("#graph")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight);
+
+  const simulation = d3
+    .forceSimulation(nodes)
+    .force(
+      "link",
+      d3.forceLink(links).id((d) => d.id)
+    )
+    .force("charge", d3.forceManyBody().strength(-200))
+    .force("center", d3.forceCenter(svgWidth / 2, svgHeight / 2));
+
+  function updateGraph() {
+    const linkElements = svg
+      .selectAll(".link")
+      .data(links, (d) => d.source + "-" + d.target);
+
+    linkElements.exit().remove();
+
+    const linkEnter = linkElements
+      .enter()
+      .append("line")
+      .attr("class", "link")
+      .attr("stroke", "gray")
+      .attr("stroke-width", (d) => d.weight);
+
+    const nodeElements = svg.selectAll(".node").data(nodes, (d) => d.id);
+
+    nodeElements.exit().remove();
+
+    const nodeEnter = nodeElements
+      .enter()
+      .append("circle")
+      .attr("class", "node")
+      .attr("r", 15)
+      .attr("fill", "blue")
+      .call(
+        d3
+          .drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended)
+      );
+
+    const nodeLabels = svg.selectAll(".node-label").data(nodes, (d) => d.id);
+
+    nodeLabels.exit().remove();
+
+    const nodeLabelsEnter = nodeLabels
+      .enter()
+      .append("text")
+      .attr("class", "node-label")
+      .attr("text-anchor", "middle")
+      .attr("fill", "white")
+      .text((d) => d.name);
+
+    const linkLabels = svg.selectAll(".link-label").data(links);
+
+    linkLabels.exit().remove();
+
+    const linkLabelsEnter = linkLabels
+      .enter()
+      .append("text")
+      .attr("class", "link-label")
+      .attr("text-anchor", "middle")
+      .attr("fill", "black")
+      .text((d) => `Peso: ${d.weight}`);
+
+    simulation.nodes(nodes).on("tick", ticked);
+
+    simulation.force("link").links(links);
+
+    function dragstarted(d) {
+      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+
+    function dragged(d) {
+      d.fx = d3.event.x;
+      d.fy = d3.event.y;
+    }
+
+    function dragended(d) {
+      if (!d3.event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
+
+    function ticked() {
+      nodeEnter.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+
+      linkEnter
+        .attr("x1", (d) => d.source.x)
+        .attr("y1", (d) => d.source.y)
+        .attr("x2", (d) => d.target.x)
+        .attr("y2", (d) => d.target.y);
+
+      nodeLabelsEnter.attr("x", (d) => d.x).attr("y", (d) => d.y);
+
+      linkLabelsEnter
+        .attr("x", (d) => (d.source.x + d.target.x) / 2)
+        .attr("y", (d) => (d.source.y + d.target.y) / 2);
+    }
+  }
+</script>
 
 {% endblock %}

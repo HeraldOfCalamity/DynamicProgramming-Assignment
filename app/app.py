@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response, redirect, send_file
+from flask import Flask, render_template, request, make_response, redirect, send_file, jsonify
 import numpy as np
 from models.Etapa import Etapa
 from models.Destino import Destino
@@ -7,12 +7,15 @@ from config import config
 from models.Matrix import Matrix
 from models.Solution import Solution
 from models.exportToPdf import create_pdf
+from models.Grafo import *
 import json
-
+from flask_cors import *
 app = Flask(__name__)
 asig = Asignacion()
 problemMatrix = Matrix()
 sol = Solution()
+cors = CORS(app, resources={r"/create_graph": {"origins": "*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 def jinja_zip(*args):
@@ -26,9 +29,11 @@ app.jinja_env.filters['zip'] = jinja_zip
 def show_home():
     return render_template('true_home_view.html', data=asig)
 
+
 @app.route('/graph')
 def show_graph_view():
     return render_template('graph_view.html', data=None)
+
 
 @app.route('/asignacion')
 def show_asig_view():
@@ -39,7 +44,6 @@ def show_asig_view():
     problemMatrix = Matrix()
     sol = Solution()
     return render_template('asig_view.html', data=asig)
-
 
 
 def generate_dest_list(num: int) -> list:
@@ -147,9 +151,15 @@ def get_graph_sol():
         weights = []
         for dest in dests:
             weights.append(request.form.get(f'costo_{i}_{dest}'))
-        graph[i] = {'name':request.form.get(f'desde_{i}'), 'sig':dests, 'weights':weights}
+        graph[i] = {'name': request.form.get(
+            f'desde_{i}'), 'sig': dests, 'weights': weights}
+
+    fillNodes(graph)
+    fill_edges(graph)
+    saveGraph('temp.jpg')
     return render_template('graph_solution.html', graph=graph)
     # return nud_nodes
+
 
 @app.route('/graph/sol/shortestpath', methods=["POST"])
 def get_or_dest():
@@ -159,14 +169,14 @@ def get_or_dest():
     print(destino)
     return render_template('putamierda.html', costominimo=3, caminocorto=[1, 2, 5] ,graph=graph)
 
+
 @app.route('/data/etapas/<int:id>')
 def getEtapas(id):
     load_cookie()
     loadMatrixCookie()
     error = None
     try:
-        asig.get_etapas()[id]
-        correct = True
+        print('hola')
     except Exception as ex:
         correct = False
         error = ex
@@ -199,8 +209,6 @@ def loadMatrixCookie():
         matrix_data = json.loads(request.cookies.get('matrix'))
         # print(f"data matrix -> {matrix_data}")
         asig.set_destinos(destParser(matrix_data['dests']))
-
-
 
 
 @app.route('/data/intervals', methods=['POST', 'GET'])
@@ -287,6 +295,46 @@ def toPdfo():
 @app.route('/manual')
 def manual():
     return render_template('manual_usuario.html', data=asig)
+
+
+@app.route('/create_graph', methods=["POST"])
+@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
+def c_graph():
+    new_graph()
+    json = request.get_json()
+
+    if json is None:
+        return jsonify({'error': 'Invalid JSON data'}), 400
+    # print(json['1'])
+    fillNodes(json)
+    fill_edges(json)
+
+    response = {"Message": f"Number of nodes: ",
+                "Message2": f"Number of Edges "}
+    # response = {"Message": f"test"}
+    print(json)
+    return jsonify(response)
+
+
+@app.route('/get_imageGraph')
+def getImageGraph():
+    saveGraph('temp.jpg')
+    return send_file('./temp/temp.jpg', as_attachment=True, download_name="grafo.jpg")
+
+
+@app.route("/get_shortest_path")
+def get_shorttestPath():
+    r = request.get_json()
+    if r is None:
+        return jsonify({"error": "Invalid"}), 400
+
+    source = r["source"]
+    dst = r["target"]
+    path = find_shortest_path(source, dst)
+    distance = find_shortest_distance(source, dst)
+
+    print(path, distance)
+    return "Get"
 
 
 if __name__ == '__main__':
