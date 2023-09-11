@@ -11,12 +11,12 @@ from models.Grafo import *
 import json
 import os
 import glob
-from flask_cors import *
+
 app = Flask(__name__)
 asig = Asignacion()
 problemMatrix = Matrix()
 sol = Solution()
-cors = CORS(app, resources={r"/create_graph": {"origins": "*"}})
+# cors = CORS(app, resources={r"/create_graph": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
@@ -329,7 +329,7 @@ def manual():
 
 
 @app.route('/create_graph', methods=["POST"])
-@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
+# @cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
 def c_graph():
     new_graph()
     json = request.get_json()
