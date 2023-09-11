@@ -19,22 +19,22 @@
             </div>
             <div class="col-3">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Vista previa
                 </button>
 
                 <!-- Modal -->
-                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Vista previa del grafo</h1>
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Vista previa del grafo</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                hola soy muy macho
+                                ...
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -130,7 +130,7 @@
         const costosElement = document.getElementById(`costos_${rowIndex}`);
         // costosElement.textContent = checkedOptions.join(',');
         costosElement.innerHTML = '';
-        let content = '<div class="row row-cols-4">';
+        let content = '<div class="row row-cols-5">';
         checkedOptions.forEach((item) => {
             content += `
             <div class="col">
