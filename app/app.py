@@ -9,6 +9,8 @@ from models.Solution import Solution
 from models.exportToPdf import create_pdf
 from models.Grafo import *
 import json
+import os
+import glob
 from flask_cors import *
 app = Flask(__name__)
 asig = Asignacion()
@@ -158,25 +160,45 @@ def get_graph_sol():
         weights = [int(x) for x in weights]
         graph[i] = {'name': request.form.get(
             f'desde_{i}'), 'sig': dests, 'weights': weights}
-
-    fillNodes(graph)
-    fill_edges(graph)
-    print(graph)
-    saveGraph('temp.jpg')
-    return render_template('graph_solution.html', graph=graph)
+    error = ''
+    try:
+        files = glob.glob("/static/images/temp*")
+        for f in files:
+            os.remove(f)
+        fillNodes(graph)
+        fill_edges(graph)
+        print(graph)
+        saveGraph('temp.jpg')
+        correct = True
+    except Exception as e:
+        error = e
+        correct = False
+    finally:
+        print(error)
+        return render_template('graph_solution.html', graph=graph, correct=correct)
     # return nud_nodes
 
 
 @app.route('/graph/sol/shortestpath', methods=["POST"])
 def get_or_dest():
-    origen = request.form.get('origen')
-    destino = request.form.get('destino')
-    print(origen)
-    print(destino)
-    costominimo = find_shortest_distance(origen, destino)
-    caminominimo = find_shortest_path(origen, destino)
-    saveGraphr("temp2.jpg", caminominimo)
-    return render_template('putamierda.html', costominimo=costominimo, caminocorto=caminominimo, graph=graph)
+    error = ''
+    costominimo = None
+    caminominimo = None
+    try:
+        origen = request.form.get('origen')
+        destino = request.form.get('destino')
+        print(origen)
+        print(destino)
+        costominimo = find_shortest_distance(origen, destino)
+        caminominimo = find_shortest_path(origen, destino)
+        saveGraphr("temp2.jpg", caminominimo)
+        correct = True
+    except Exception as e:
+        error = e
+        correct = False
+    finally:
+        print(error)
+        return render_template('putamierda.html', costominimo=costominimo, caminocorto=caminominimo, graph=graph, correct=correct)
 
 
 @app.route('/data/etapas/<int:id>')

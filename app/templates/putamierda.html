@@ -1,4 +1,4 @@
-{% extends './layout.html' %} {% block body %}
+{% extends './layout.html' %} {% block body %} {% if correct %}
 <!-- <img src="" alt=""> -->
 <input
   type="text"
@@ -13,4 +13,12 @@
   readonly
 />
 <img src="{{ url_for('static', filename='images/temp2.jpg')}}" alt="" />
-{% endblock %}
+
+{%else%}
+<div>
+  <h1>Error, ingrese datos validos de inicio</h1>
+  <div class="alert alert-danger" role="alert">
+    Error: Ingersar Datos Validos
+  </div>
+</div>
+{% endif %} {% endblock %}

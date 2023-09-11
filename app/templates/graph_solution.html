@@ -1,4 +1,4 @@
-{% extends './layout.html' %} {% block body %}
+{% extends './layout.html' %} {% block body %} {% if correct %}
 <div class="card mb-4 bg-secondary-subtle">
   <h1 class="mt-3">Ruta mas corta</h1>
   <div class="card-header">
@@ -40,5 +40,11 @@
     <img src="{{ url_for('static', filename='images/temp.jpg')}}" alt="" />
   </div>
 </div>
-
-{% endblock %} {% block script %} {% endblock %}
+{% else %}
+<div>
+  <h1>Error, ingrese datos validos de inicio</h1>
+  <div class="alert alert-danger" role="alert">
+    Error: Ingersar Datos Validos
+  </div>
+</div>
+{% endif %} {% endblock %} {% block script %} {% endblock %}

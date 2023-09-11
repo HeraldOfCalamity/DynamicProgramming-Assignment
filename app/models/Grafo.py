@@ -82,7 +82,7 @@ def saveGraphr(naem, resp):
 
     # Crear un diccionario de colores para los nodos
     node_colors = [
-        'blue' if node_id in nodes_to_color else 'gray' for node_id in G.nodes()]
+        'red' if node_id in nodes_to_color else 'blue' for node_id in G.nodes()]
 
     # Filtrar las conexiones que pertenecen a los nodos en resp
     edges_to_color = [(u, v) for (u, v) in G.edges()
