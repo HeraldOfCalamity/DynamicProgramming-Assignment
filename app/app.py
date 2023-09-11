@@ -136,9 +136,10 @@ def setCookie():
         resp.set_cookie('asig', json.dumps(toCookie))
         return resp
 
+graph = {}
 @app.route('/graph/sol', methods=["POST"])
 def get_graph_sol():
-    graph = {}
+    
     
     nud_nodes = int(request.form.get('nud_nodes'))
     for i in range(1, nud_nodes+1):
@@ -149,6 +150,14 @@ def get_graph_sol():
         graph[i] = {'name':request.form.get(f'desde_{i}'), 'sig':dests, 'weights':weights}
     return render_template('graph_solution.html', graph=graph)
     # return nud_nodes
+
+@app.route('/graph/sol/shortestpath', methods=["POST"])
+def get_or_dest():
+    origen = request.form.get('origen')
+    destino = request.form.get('destino')
+    print(origen)
+    print(destino)
+    return render_template('putamierda.html', costominimo=3, caminocorto=[1, 2, 5] ,graph=graph)
 
 @app.route('/data/etapas/<int:id>')
 def getEtapas(id):
