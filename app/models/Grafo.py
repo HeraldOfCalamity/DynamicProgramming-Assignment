@@ -41,6 +41,8 @@ def find_shortest_distance(source, target):
     return nx.shortest_path_length(G, source=source, target=target, weight="weight")
 
 
+import matplotlib.pyplot as plt
+
 def saveGraph(naem):
     for u, v, weight in G.edges(data='weight', default=1):
         print(f"Arista: {u} - {v}, Peso: {weight}")
@@ -52,24 +54,31 @@ def saveGraph(naem):
     esmall = [(u, v) for (u, v, d) in G.edges(
         data=True) if int(d["weight"]) <= 5]
 
+    # Create a figure with a custom size (e.g., figsize=(10, 8))
+    fig, ax = plt.subplots(figsize=(10, 8))
+
     nx.draw_networkx_edges(G, pos, edgelist=elarge,
                            width=6, edge_color='black', node_size=500)
     nx.draw_networkx_edges(G, pos, edgelist=esmall, width=6,
                            edge_color='black', style='dashed', node_size=500)
 
-    # print(G.nodes)
-
     nx.draw_networkx_labels(G, pos, font_size=20,
                             font_family="sans-serif", font_color="white")
     nx.draw_networkx_nodes(G, pos, node_color=["blue"], node_size=500)
-# edge weight labels
+
+    # edge weight labels
     edge_labels = nx.get_edge_attributes(G, "weight")
     nx.draw_networkx_edge_labels(G, pos, edge_labels)
 
-    # print(G.nodes())
     plt.axis("off")
     plt.tight_layout()
+
+    # Save the figure with the custom size
     plt.savefig(f'./app/static/images/{naem}')
+
+# Call the function with the desired filename
+# saveGraph("custom_size_graph.png")
+# 
 
 
 def saveGraphr(naem, resp):
