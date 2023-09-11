@@ -31,10 +31,10 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <!-- Seccion asignacion -->
-                        <a class="nav-link active" href="/">Inicio</a>
+                        <a class="nav-link active" href="{{ url_for('show_home') }}">Inicio</a>
                         <div class="sb-sidenav-menu-heading">Asignacion T.D.</div>
-                        <a class="nav-link" href="/asignacion">Nuevo Problema</a>
-                        {% if data.get_etapas() %}
+                        <a class="nav-link" href="/asignacion">Nueva tabla</a>
+                        {% if data and data.get_etapas() %}
                         {% set r = [] %} {% for x in data.get_etapas() %} {% set _ = r.append(x) %} {% endfor %}
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
@@ -71,6 +71,7 @@
 
                         <!-- Seccion grafos -->
                         <div class="sb-sidenav-menu-heading">Ruta mas corta</div>
+                        <a class="nav-link" href="/graph">Nuevo grafo</a>
                         
                         
                     </div>

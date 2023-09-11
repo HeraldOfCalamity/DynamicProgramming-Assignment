@@ -21,9 +21,9 @@ app.jinja_env.filters['zip'] = jinja_zip
 def show_home():
     return render_template('true_home_view.html', data=asig)
 
-@app.route('/caminocorto')
+@app.route('/graph')
 def show_graph_view():
-    return 'hola'
+    return render_template('graph_view.html', data=None)
 
 @app.route('/asignacion')
 def show_asig_view():
