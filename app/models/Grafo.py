@@ -13,7 +13,8 @@ def new_graph():
 
 def fillNodes(nodes):
     for node in nodes:
-        G.add_node(node)
+        print(node)
+        G.add_node(nodes[node]["name"])
 
 
 def fill_edges(nodes):
@@ -25,8 +26,8 @@ def fill_edges(nodes):
             for s, w in zip(sig, we):
                 # Convertir s a cadena para que coincida con los nodos
                 G.add_edge(name, str(s), weight=w)
-        else:
-            G.add_edge(name, str(sig), weight=we)
+    # print(G.nodes())
+    # print(G.edges())
 
 
 def find_shortest_path(source, target):
@@ -43,13 +44,17 @@ def saveGraph(naem):
 
     random.seed(42)
     pos = nx.random_layout(G, seed=random.randint(1, 1000))
-    elarge = [(u, v) for (u, v, d) in G.edges(data=True) if d["weight"] > 5]
-    esmall = [(u, v) for (u, v, d) in G.edges(data=True) if d["weight"] <= 5]
+    elarge = [(u, v) for (u, v, d) in G.edges(
+        data=True) if int(d["weight"]) > 5]
+    esmall = [(u, v) for (u, v, d) in G.edges(
+        data=True) if int(d["weight"]) <= 5]
 
     nx.draw_networkx_edges(G, pos, edgelist=elarge,
                            width=6, edge_color='black', node_size=500)
     nx.draw_networkx_edges(G, pos, edgelist=esmall, width=6,
                            edge_color='black', style='dashed', node_size=500)
+
+    # print(G.nodes)
 
     nx.draw_networkx_labels(G, pos, font_size=20,
                             font_family="sans-serif", font_color="white")
@@ -60,4 +65,4 @@ def saveGraph(naem):
 
     plt.axis("off")
     plt.tight_layout()
-    plt.savefig(f'./app/temp/{naem}')
+    plt.savefig(f'./app/static/images/{naem}')
