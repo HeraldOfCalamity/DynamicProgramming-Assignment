@@ -113,7 +113,7 @@
 <script src="https://d3js.org/d3.v6.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const btn_sumbit = document.getElementById("btn_submit");
+    const btn_submit = document.getElementById("btn_submit");
     const nudNodesInput = document.getElementById("nud_nodes");
     const tableBody = document.getElementById("tableBody");
     const maxNodes = parseInt(nudNodesInput.getAttribute("max"), 10);
@@ -168,6 +168,15 @@
     return checkboxesHTML;
   }
 
+  function validateNoTarget(source, target){
+    let back = document.getElementsByName('costo_'+target+'_'+source)[0]
+    // console.log('vuelta', back)
+    if(back){
+        // console.log('ida', document.getElementsByName('costo_'+source+'_'+target)[0])
+        back.value = document.getElementsByName('costo_'+source+'_'+target)[0].value
+    }
+  }
+
   function updateCheckedOptions(rowIndex) {
     const checkedOptions = collectCheckedCheckboxes(rowIndex);
     const costosElement = document.getElementById(`costos_${rowIndex}`);
@@ -180,7 +189,7 @@
                     <span class="input-group-text bg-secondary text-light border border-secondary">
                         Costo ${item}:
                     </span>
-                    <input class="form-control form-control-sm border border-secondary" type="number" name="costo_${rowIndex}_${item}"
+                    <input class="form-control form-control-sm border border-secondary" type="number" name="costo_${rowIndex}_${item}" oninput="validateNoTarget(${rowIndex}, ${item});"
                          min="1" max="20" step="0.01" placeholder="0" value="0" required onclick="this.select();">
                 </div>
             </div>    
@@ -189,6 +198,24 @@
     content += "</div>";
     costosElement.innerHTML = content;
   }
+
+  function isFormValid(num){
+    for(let i=1; i<=num; i++){
+        for(let j=1; j<=num; j++){
+            if(document.getElementsByName('costo_'+i+'_'+j)[0].value != document.getElementsByName('costo_'+j+'_'+i)[0].value){
+                return false;
+            }
+        }
+    }
+    return true;
+  }
+
+//   btn_submit.addEventListener('click',(e) => {
+//     if(!isFormValid(tableBody.children.length)){
+//         e.preventDefault();
+//         alret("Hay nodos de ida y vuelta que tienen costos distintos");
+//     }
+//   })
 
   let conexiones = {};
 
@@ -203,145 +230,147 @@
     return checkedOptions;
   }
 
+  
+
   // ===============================================================
   // D3.js Graph Drawing
   // ===============================================================
 
-  let nodes = [];
-  let links = [];
+//   let nodes = [];
+//   let links = [];
 
-  // ...
-  vistaPrevia.addEventListener("click", () => {
-    nodes = [];
-    links = [];
+//   // ...
+//   vistaPrevia.addEventListener("click", () => {
+//     nodes = [];
+//     links = [];
 
-    for (let i = 1; i <= tableBody.children.length; i++) {
-      const desdeInput = document.getElementById(`desde_${i}`);
-      nodes.push({ id: `desde_${i}`, name: desdeInput.value });
-    }
+//     for (let i = 1; i <= tableBody.children.length; i++) {
+//       const desdeInput = document.getElementById(`desde_${i}`);
+//       nodes.push({ id: `desde_${i}`, name: desdeInput.value });
+//     }
 
-    for (let clave in conexiones) {
-      for (con in conexiones[clave]) {
-        const sourceId = `desde_${clave}`;
-        const targetId = `desde_${conexiones[clave][con]}`;
-        links.push({ source: sourceId, target: targetId, weight: 3 });
-      }
-    }
-    console.log(links);
-    updateGraph();
-  });
-  // ...
+//     for (let clave in conexiones) {
+//       for (con in conexiones[clave]) {
+//         const sourceId = `desde_${clave}`;
+//         const targetId = `desde_${conexiones[clave][con]}`;
+//         links.push({ source: sourceId, target: targetId, weight: 3 });
+//       }
+//     }
+    
+//     updateGraph();
+//   });
+//   // ...
 
-  const svgWidth = 600;
-  const svgHeight = 400;
+//   const svgWidth = 600;
+//   const svgHeight = 400;
 
-  const svg = d3
-    .select("#graph")
-    .attr("width", svgWidth)
-    .attr("height", svgHeight);
+//   const svg = d3
+//     .select("#graph")
+//     .attr("width", svgWidth)
+//     .attr("height", svgHeight);
 
-  const simulation = d3
-    .forceSimulation(nodes)
-    .force(
-      "link",
-      d3.forceLink(links).id((d) => d.id)
-    )
-    .force("charge", d3.forceManyBody().strength(-200))
-    .force("center", d3.forceCenter(svgWidth / 2, svgHeight / 2));
+//   const simulation = d3
+//     .forceSimulation(nodes)
+//     .force(
+//       "link",
+//       d3.forceLink(links).id((d) => d.id)
+//     )
+//     .force("charge", d3.forceManyBody().strength(-200))
+//     .force("center", d3.forceCenter(svgWidth / 2, svgHeight / 2));
 
-  function updateGraph() {
-    const linkElements = svg
-      .selectAll(".link")
-      .data(links, (d) => d.source + "-" + d.target);
+//   function updateGraph() {
+//     const linkElements = svg
+//       .selectAll(".link")
+//       .data(links, (d) => d.source + "-" + d.target);
 
-    linkElements.exit().remove();
+//     linkElements.exit().remove();
 
-    const linkEnter = linkElements
-      .enter()
-      .append("line")
-      .attr("class", "link")
-      .attr("stroke", "gray")
-      .attr("stroke-width", (d) => d.weight);
+//     const linkEnter = linkElements
+//       .enter()
+//       .append("line")
+//       .attr("class", "link")
+//       .attr("stroke", "gray")
+//       .attr("stroke-width", (d) => d.weight);
 
-    const nodeElements = svg.selectAll(".node").data(nodes, (d) => d.id);
+//     const nodeElements = svg.selectAll(".node").data(nodes, (d) => d.id);
 
-    nodeElements.exit().remove();
+//     nodeElements.exit().remove();
 
-    const nodeEnter = nodeElements
-      .enter()
-      .append("circle")
-      .attr("class", "node")
-      .attr("r", 15)
-      .attr("fill", "blue")
-      .call(
-        d3
-          .drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended)
-      );
+//     const nodeEnter = nodeElements
+//       .enter()
+//       .append("circle")
+//       .attr("class", "node")
+//       .attr("r", 15)
+//       .attr("fill", "blue")
+//       .call(
+//         d3
+//           .drag()
+//           .on("start", dragstarted)
+//           .on("drag", dragged)
+//           .on("end", dragended)
+//       );
 
-    const nodeLabels = svg.selectAll(".node-label").data(nodes, (d) => d.id);
+//     const nodeLabels = svg.selectAll(".node-label").data(nodes, (d) => d.id);
 
-    nodeLabels.exit().remove();
+//     nodeLabels.exit().remove();
 
-    const nodeLabelsEnter = nodeLabels
-      .enter()
-      .append("text")
-      .attr("class", "node-label")
-      .attr("text-anchor", "middle")
-      .attr("fill", "white")
-      .text((d) => d.name);
+//     const nodeLabelsEnter = nodeLabels
+//       .enter()
+//       .append("text")
+//       .attr("class", "node-label")
+//       .attr("text-anchor", "middle")
+//       .attr("fill", "white")
+//       .text((d) => d.name);
 
-    const linkLabels = svg.selectAll(".link-label").data(links);
+//     const linkLabels = svg.selectAll(".link-label").data(links);
 
-    linkLabels.exit().remove();
+//     linkLabels.exit().remove();
 
-    const linkLabelsEnter = linkLabels
-      .enter()
-      .append("text")
-      .attr("class", "link-label")
-      .attr("text-anchor", "middle")
-      .attr("fill", "black")
-      .text((d) => `Peso: ${d.weight}`);
+//     const linkLabelsEnter = linkLabels
+//       .enter()
+//       .append("text")
+//       .attr("class", "link-label")
+//       .attr("text-anchor", "middle")
+//       .attr("fill", "black")
+//       .text((d) => `Peso: ${d.weight}`);
 
-    simulation.nodes(nodes).on("tick", ticked);
+//     simulation.nodes(nodes).on("tick", ticked);
 
-    simulation.force("link").links(links);
+//     simulation.force("link").links(links);
 
-    function dragstarted(d) {
-      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    }
+//     function dragstarted(d) {
+//       if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+//       d.fx = d.x;
+//       d.fy = d.y;
+//     }
 
-    function dragged(d) {
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
-    }
+//     function dragged(d) {
+//       d.fx = d3.event.x;
+//       d.fy = d3.event.y;
+//     }
 
-    function dragended(d) {
-      if (!d3.event.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-    }
+//     function dragended(d) {
+//       if (!d3.event.active) simulation.alphaTarget(0);
+//       d.fx = null;
+//       d.fy = null;
+//     }
 
-    function ticked() {
-      nodeEnter.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+//     function ticked() {
+//       nodeEnter.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
 
-      linkEnter
-        .attr("x1", (d) => d.source.x)
-        .attr("y1", (d) => d.source.y)
-        .attr("x2", (d) => d.target.x)
-        .attr("y2", (d) => d.target.y);
+//       linkEnter
+//         .attr("x1", (d) => d.source.x)
+//         .attr("y1", (d) => d.source.y)
+//         .attr("x2", (d) => d.target.x)
+//         .attr("y2", (d) => d.target.y);
 
-      nodeLabelsEnter.attr("x", (d) => d.x).attr("y", (d) => d.y);
+//       nodeLabelsEnter.attr("x", (d) => d.x).attr("y", (d) => d.y);
 
-      linkLabelsEnter
-        .attr("x", (d) => (d.source.x + d.target.x) / 2)
-        .attr("y", (d) => (d.source.y + d.target.y) / 2);
-    }
-  }
+//       linkLabelsEnter
+//         .attr("x", (d) => (d.source.x + d.target.x) / 2)
+//         .attr("y", (d) => (d.source.y + d.target.y) / 2);
+//     }
+//   }
 </script>
 
 {% endblock %}
