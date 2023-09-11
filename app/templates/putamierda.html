@@ -1,6 +1,16 @@
-{% extends './layout.html' %}
-{% block body %}
+{% extends './layout.html' %} {% block body %}
 <!-- <img src="" alt=""> -->
-<input type="text" class="form-control form-control-lg" value="{{costominimo}}" readonly>
-<input type="text" class="form-control form-control-lg" value="{{caminocorto}}" readonly>
+<input
+  type="text"
+  class="form-control form-control-lg"
+  value="{{costominimo}}"
+  readonly
+/>
+<input
+  type="text"
+  class="form-control form-control-lg"
+  value="{{caminocorto}}"
+  readonly
+/>
+<img src="{{ url_for('static', filename='images/temp2.jpg')}}" alt="" />
 {% endblock %}
